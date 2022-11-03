@@ -1,0 +1,10 @@
+#header {
+    background-color: grey;
+}
+
+#logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100px;
+}

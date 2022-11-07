@@ -17,7 +17,7 @@ export default class Section extends React.Component {
     return (
       <div>
         {inputs.map((input) => {
-          return <Input title={input.title} type={input.type} class={input.class}/>;
+          return <Input title={input.title} type={input.type} className={input.class} required={input.required}/>;
         })}
       </div>
     );
@@ -44,10 +44,11 @@ export default class Section extends React.Component {
   }
 
   addInput(inputs, buttonId) {
-    console.log(this.state.renderedButtons);
+    console.log(this.props.buttons[0].inputs)
+    console.log(inputs )
     this.setState({
       renderedInputs: [...this.state.renderedInputs, ...inputs],
-      renderedButtons: this.updateButtons(buttonId),
+      //renderedButtons: this.updateButtons(buttonId),
     });
   }
 
@@ -61,17 +62,7 @@ export default class Section extends React.Component {
         renderedButtons: this.updateButtons(buttonId)
     })
   }
-
-  stageInputs() {
-    console.log(this.state.renderedInputs)
-    let inputValues = this.state.renderedInputs.map(input => input.value)
-    console.log(inputValues)
-    this.setState({ 
-      values: inputValues,
-      isStaged: true
-    })
-  }
-
+  
   updateButtons(buttonId) {
     let buttonIndex = 0;
     let buttons = [...this.state.renderedButtons];
@@ -95,6 +86,12 @@ export default class Section extends React.Component {
     return buttons;
   }
 
+  nextSection(e) {
+    //e.preventDefault()
+    let formData = new FormData(document.getElementById(this.props.title))
+    console.log(formData)
+  }
+
   render() {
     if (this.state.isStaged) {
       return (
@@ -105,12 +102,13 @@ export default class Section extends React.Component {
       )
     } else {
       return (
-        <div>
+        <form id={this.props.title}>
           <h2>{this.props.title}</h2>
           {this.generateInputs(this.state.renderedInputs)}
-          {this.generateButtons(this.state.renderedButtons)}
-          <button id='stage' onClick={(e) => this.stageInputs()}>Submit</button>
-        </div>
+          { /* {this.generateButtons(this.state.renderedButtons)} */}
+          <button className='add-inputs' onClick={(e) => this.addInput(this.props.buttons[0].inputs)}>{this.props.buttons[0].primaryText}</button>
+          <button className='next-section' type='submit' onClick={(e) => this.nextSection(e)}>{this.props.nextSectionText}</button>
+        </form>
       );
     }
     

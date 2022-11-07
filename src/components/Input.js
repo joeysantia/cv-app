@@ -14,7 +14,7 @@ export default class Input extends React.Component {
 
             return (
                 <div className={this.props.class}>
-                    <label for='states'>State</label>
+                    <label htmlFor='states'>{this.props.title}</label>
                     <select name='states'>
                         {states.map(state => {
                             return (
@@ -29,7 +29,7 @@ export default class Input extends React.Component {
         return (
             <div className={this.props.class}>
                 <label htmlFor='#'>{this.props.title}</label>
-                <input class={this.props.class} id='#' name='#' type={this.props.type} required={this.props.required}></input>
+                <input className={this.props.class} id='#' name='#' type={this.props.type} required={this.props.required}></input>
             </div>
         )
     }

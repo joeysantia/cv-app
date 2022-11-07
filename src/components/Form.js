@@ -4,33 +4,42 @@ import Section from "./Section";
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      responses: {},
+      contactsSubmitted: false,
+      educationSubmitted: false,
+      experienceSubmitted: false,
+      skillsSubmitted: false
+    }
+    
+  }
+
+  addResponses() {
+    this.setState.bind(this)
+  }
+
+  nextSection() {
+
   }
 
   render() {
 
     let contactInputs = [
-      { title: "First Name", type: "text", class: 'set' },
-      { title: "Last Name", type: "text", class: 'set' },
-      { title: "Email Address", type: "email", class: 'set' },
-      { title: "Phone Number", type: "phone", class: 'set' },
+      { title: "First Name", type: "text", required: true, class: 'set' },
+      { title: "Last Name", type: "text", required: true, class: 'set' },
+      { title: "Email Address", type: "email", required: true, class: 'set' },
+      { title: "Phone Number", type: "phone", required: true, class: 'set' },
+      { title: "Address Line 1 (optional)", type: "text", required: false, class: "address" },
+          { title: "Address Line 2 (optional)", type: "text", class: "address" },
+          { title: "City (optional)", type: "text", class: "address" },
+          { title: "State (optional)", type: "states", class: "address" },
     ];
 
     let contactButtons = [
       {
-        id: 'address',
-        primaryText: "Add Address?",
-        secondaryText: "Remove Address Inputs",
-        inputsRendered: false,
-        inputs: [
-          { title: "Address Line 1", type: "text", class: "address" },
-          { title: "Address Line 2", type: "text", class: "address" },
-          { title: "City", type: "text", class: "address" },
-          { title: "State", type: "states", class: "address" },
-        ],
-      },
-      {
         id: 'website',
-        primaryText: "Add Website?",
+        primaryText: "Add Website",
         secondaryText: "Remove Website Inputs",
         inputsRendered: false,
         inputs: [{ title: "Website Title", type: "text", class: "website" }],
@@ -49,22 +58,30 @@ export default class Form extends React.Component {
             {title: 'Degree Earned', type: 'text', class: 'education'},
             {title: 'GPA', type: 'text', class: 'education'},
             {title: 'Description', type: 'textarea', class: 'education'}
-        ]
-    }
-]
-    return (
-      <div>
-        <Section
+          ]
+      }
+  ]
+
+  //this quasi-switch statement can probably be 
+  //solved with a dict, but not sure how yet.
+    if (this.state.skillsSubmitted) {
+      return <Section title="Review" />
+      
+    } else if (this.state.experienceSubmitted) {
+      return <Section title="Skills" />
+    } else if (this.state.educationSubmitted) {
+      return <Section title='Experience' />
+    } else if (this.state.contactsSubmitted) {
+      return <Section title='Education' />
+    } else {
+      return ( <Section
           title="Contact"
           inputs={contactInputs}
           buttons={contactButtons}
-        />
-        <Section
-            title='Education'
-            inputs={educationInputs}
-            buttons={educationButtons}
-        />
-      </div>
-    );
+          nextSectionText="Move on to Education"
+          addResponses={this.addResponses}
+          nextSection={this.nextSection}
+        />)
+    };
   }
 }

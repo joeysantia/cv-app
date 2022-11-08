@@ -26,14 +26,14 @@ export default class Form extends React.Component {
   render() {
 
     let contactInputs = [
-      { title: "First Name", type: "text", required: true, class: 'set' },
-      { title: "Last Name", type: "text", required: true, class: 'set' },
-      { title: "Email Address", type: "email", required: true, class: 'set' },
-      { title: "Phone Number", type: "phone", required: true, class: 'set' },
-      { title: "Address Line 1 (optional)", type: "text", required: false, class: "address" },
-          { title: "Address Line 2 (optional)", type: "text", class: "address" },
-          { title: "City (optional)", type: "text", class: "address" },
-          { title: "State (optional)", type: "states", class: "address" },
+      { title: "First Name", id: 'first-name', type: "text", required: true, class: 'set' },
+      { title: "Last Name", id:'last-name', type: "text", required: true, class: 'set' },
+      { title: "Email Address", id: 'email', type: "email", required: true, class: 'set' },
+      { title: "Phone Number", id:'phone', type: "phone", required: true, class: 'set' },
+      { title: "Address Line 1 (optional)", id: 'address-1', type: "text", required: false, class: "address" },
+          { title: "Address Line 2 (optional)", id:'address-2', type: "text", class: "address" },
+          { title: "City (optional)", id: 'city', type: "text", class: "address" },
+          { title: "State (optional)", id: 'state', type: "states", class: "address" },
     ];
 
     let contactButtons = [
@@ -78,6 +78,7 @@ export default class Form extends React.Component {
           title="Contact"
           inputs={contactInputs}
           buttons={contactButtons}
+          name='Contact'
           nextSectionText="Move on to Education"
           addResponses={this.addResponses}
           nextSection={this.nextSection}

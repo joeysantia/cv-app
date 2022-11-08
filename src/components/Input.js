@@ -28,8 +28,8 @@ export default class Input extends React.Component {
 
         return (
             <div className={this.props.class}>
-                <label htmlFor='#'>{this.props.title}</label>
-                <input className={this.props.class} id='#' name='#' type={this.props.type} required={this.props.required}></input>
+                <label htmlFor={this.props.for}>{this.props.title}</label>
+                <input className={this.props.class} id={this.props.id} name={this.props.name} type={this.props.type} required={this.props.required}></input>
             </div>
         )
     }

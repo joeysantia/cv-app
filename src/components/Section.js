@@ -17,7 +17,7 @@ export default class Section extends React.Component {
     return (
       <div>
         {inputs.map((input) => {
-          return <Input title={input.title} type={input.type} className={input.class} required={input.required}/>;
+          return <Input title={input.title} type={input.type} className={input.class} name={this.props.id} htmlFor={this.props.id} id={this.props.id} required={input.required}/>;
         })}
       </div>
     );
@@ -87,20 +87,26 @@ export default class Section extends React.Component {
   }
 
   nextSection(e) {
-    //e.preventDefault()
-    let formData = new FormData(document.getElementById(this.props.title))
-    console.log(formData)
+    e.preventDefault()
+    
+    let data = document.getElementById(this.props.title)
+    console.log(data)
+    for (const element of data.elements) {
+      console.log(element.id, element.value)
+    }
+
   }
 
   render() {
+    
     if (this.state.isStaged) {
       return (
         <Summary 
           inputs={this.state.renderedInputs}
 
         />
-      )
-    } else {
+      ) 
+    } else { 
       return (
         <form id={this.props.title}>
           <h2>{this.props.title}</h2>

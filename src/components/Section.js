@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Input from "./Input";
-import Summary from "./Summary"
+import Summary from "./Summary";
 
 export default class Section extends React.Component {
   constructor(props) {
@@ -9,7 +9,6 @@ export default class Section extends React.Component {
     this.state = {
       renderedInputs: this.props.inputs,
       renderedButtons: this.props.buttons,
-      isStaged: false
     };
   }
 
@@ -17,7 +16,17 @@ export default class Section extends React.Component {
     return (
       <div>
         {inputs.map((input) => {
-          return <Input title={input.title} type={input.type} className={input.class} name={this.props.id} htmlFor={this.props.id} id={this.props.id} required={input.required}/>;
+          return (
+            <Input
+              title={input.title}
+              type={input.type}
+              className={input.class}
+              name={input.id}
+              htmlFor={input.id}
+              id={input.id}
+              required={input.required}
+            />
+          );
         })}
       </div>
     );
@@ -33,7 +42,11 @@ export default class Section extends React.Component {
           return (
             <button
               id={button.id}
-              onClick={(e) => (button.inputsRendered ? this.removeInput(button.id) : this.addInput(button.inputs, button.id))}
+              onClick={(e) =>
+                button.inputsRendered
+                  ? this.removeInput(button.id)
+                  : this.addInput(button.inputs, button.id)
+              }
             >
               {text}
             </button>
@@ -43,80 +56,64 @@ export default class Section extends React.Component {
     );
   }
 
-  addInput(inputs, buttonId) {
-    console.log(this.props.buttons[0].inputs)
-    console.log(inputs )
+  addInput(e, inputs) {
+    e.preventDefault();
     this.setState({
       renderedInputs: [...this.state.renderedInputs, ...inputs],
-      //renderedButtons: this.updateButtons(buttonId),
     });
   }
 
+  nextSection(e) {
+    e.preventDefault();
 
-  removeInput(buttonId) {
-    let newInputs = this.state.renderedInputs.filter(input => {
-        return input.class !== buttonId
-    })
-    this.setState({
-        renderedInputs: newInputs,
-        renderedButtons: this.updateButtons(buttonId)
-    })
-  }
-  
-  updateButtons(buttonId) {
-    let buttonIndex = 0;
-    let buttons = [...this.state.renderedButtons];
-    let button;
-
-    for (let i = 0; i < buttons.length; i++) {
-      if (buttons[i].id === buttonId) {
-        buttonIndex = i;
-        button = buttons[i];
-        break;
+    let data = document.getElementById(this.props.title);
+    let curResponses = {};
+    for (const element of data.elements) {
+      if (element.id !== "" && element.value !== "") {
+        curResponses[element.id] = element.value;
       }
     }
 
-    let updatedButton = {
-      ...buttons[buttonIndex],
-      inputsRendered: !button.inputsRendered,
-    };
-
-    buttons[buttonIndex] = updatedButton;
-
-    return buttons;
-  }
-
-  nextSection(e) {
-    e.preventDefault()
-    
-    let data = document.getElementById(this.props.title)
-    console.log(data)
-    for (const element of data.elements) {
-      console.log(element.id, element.value)
+    //use computed names instead!! we figured out
+    //what it's useful for! hooray! 
+    this.props.sendResponses({
+      responses: [...this.props.prevResponses, curResponses],
+    });
+    if (this.props.title === "Contact") {
+      this.props.sendResponses({
+        contactsSubmitted: true,
+      });
+    } else if (this.props.title === "Education") {
+      this.props.sendResponses({
+        educationSubmitted: true,
+      });
+    } else if (this.props.title === 'Employment') {
+      this.props.sendResponses({
+        employmentSubmitted: true,
+      })
     }
 
+    this.setState({
+      renderedInputs: [],
+      renderedButtons: [],
+    });
   }
 
   render() {
-    
-    if (this.state.isStaged) {
-      return (
-        <Summary 
-          inputs={this.state.renderedInputs}
-
-        />
-      ) 
-    } else { 
-      return (
-        <form id={this.props.title}>
-          <h2>{this.props.title}</h2>
-          {this.generateInputs(this.state.renderedInputs)}
-          { /* {this.generateButtons(this.state.renderedButtons)} */}
-          <button className='add-inputs' onClick={(e) => this.addInput(this.props.buttons[0].inputs)}>{this.props.buttons[0].primaryText}</button>
-          <button className='next-section' type='submit' onClick={(e) => this.nextSection(e)}>{this.props.nextSectionText}</button>
-        </form>
-      );
-    }
-    
+    return (
+      <form onSubmit={(e) => this.nextSection(e)} id={this.props.title}>
+        <h2>{this.props.title}</h2>
+        {this.generateInputs(this.state.renderedInputs)}
+        <button
+          className="add-inputs"
+          onClick={(e) => this.addInput(e, this.props.buttons[0].inputs)}
+        >
+          {this.props.buttons[0].primaryText}
+        </button>
+        <button className="next-section" type="submit">
+          {this.props.nextSectionText}
+        </button>
+      </form>
+    );
   }
 }

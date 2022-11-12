@@ -1,5 +1,4 @@
-import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
-import React, { Component } from "react";
+import React from "react";
 import Section from "./Section";
 
 export default class Form extends React.Component {
@@ -15,12 +14,6 @@ export default class Form extends React.Component {
     };
     this.setFormState = this.setState.bind(this);
   }
-
-  addResponses(props) {
-    this.setFormState(props);
-  }
-
-  nextSection() {}
 
   render() {
     console.log(this.state.responses);
@@ -80,7 +73,6 @@ export default class Form extends React.Component {
       {
         id: "website",
         primaryText: "Add Website",
-        secondaryText: "Remove Website Inputs",
         inputsRendered: false,
         inputs: [{ title: "Website Title", type: "text", class: "website" }],
       },
@@ -91,7 +83,6 @@ export default class Form extends React.Component {
       {
         id: "education",
         primaryText: "Add Education",
-        secondaryText: "Remove Education fields",
         inputsRendered: false,
         inputs: [
           {
@@ -142,7 +133,7 @@ export default class Form extends React.Component {
           buttons={educationButtons}
           name="Education"
           nextSectionText="Move on to Employment"
-          addResponses={this.addResponses}
+          addResponses={this.setFormState}
           nextSection={this.nextSection}
           sendResponses={this.setFormState}
           prevResponses={this.state.responses}
@@ -156,7 +147,7 @@ export default class Form extends React.Component {
           buttons={contactButtons}
           name="Contact"
           nextSectionText="Move on to Education"
-          addResponses={this.addResponses}
+          addResponses={this.setFormState}
           nextSection={this.nextSection}
           sendResponses={this.setFormState}
           prevResponses={this.state.responses}

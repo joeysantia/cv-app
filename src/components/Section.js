@@ -36,16 +36,12 @@ export default class Section extends React.Component {
     return (
       <div>
         {buttons.map((button) => {
-          let text = button.inputsRendered
-            ? button.secondaryText
-            : button.primaryText;
+          let text = button.primaryText;
           return (
             <button
               id={button.id}
-              onClick={(e) =>
-                button.inputsRendered
-                  ? this.removeInput(button.id)
-                  : this.addInput(button.inputs, button.id)
+              type='button'
+              onClick={(e) => this.addInput(e, button.inputs)
               }
             >
               {text}
@@ -74,24 +70,17 @@ export default class Section extends React.Component {
       }
     }
 
-    //use computed names instead!! we figured out
-    //what it's useful for! hooray! 
+    let titleMap = {
+      'Contact': 'contactsSubmitted',
+      'Education': 'educationSubmitted',
+      'Employment': 'employmentSubmitted',
+      'Skills': 'skillsSubmitted'
+    }
+
     this.props.sendResponses({
       responses: [...this.props.prevResponses, curResponses],
+      [titleMap[this.props.title]]: true
     });
-    if (this.props.title === "Contact") {
-      this.props.sendResponses({
-        contactsSubmitted: true,
-      });
-    } else if (this.props.title === "Education") {
-      this.props.sendResponses({
-        educationSubmitted: true,
-      });
-    } else if (this.props.title === 'Employment') {
-      this.props.sendResponses({
-        employmentSubmitted: true,
-      })
-    }
 
     this.setState({
       renderedInputs: [],
@@ -104,12 +93,8 @@ export default class Section extends React.Component {
       <form onSubmit={(e) => this.nextSection(e)} id={this.props.title}>
         <h2>{this.props.title}</h2>
         {this.generateInputs(this.state.renderedInputs)}
-        <button
-          className="add-inputs"
-          onClick={(e) => this.addInput(e, this.props.buttons[0].inputs)}
-        >
-          {this.props.buttons[0].primaryText}
-        </button>
+        {/**can I just do a map function for the buttons instead? */}
+        {this.generateButtons(this.state.renderedButtons)}
         <button className="next-section" type="submit">
           {this.props.nextSectionText}
         </button>

@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import Input from "./Input";
-import Summary from "./Summary";
 
 export default class Section extends React.Component {
   constructor(props) {
@@ -8,7 +7,7 @@ export default class Section extends React.Component {
 
     this.state = {
       renderedInputs: this.props.inputs,
-      renderedButtons: this.props.buttons,
+      canAddInput: true, 
     };
   }
 
@@ -40,9 +39,8 @@ export default class Section extends React.Component {
           return (
             <button
               id={button.id}
-              type='button'
-              onClick={(e) => this.addInput(e, button.inputs)
-              }
+              type="button"
+              onClick={(e) => this.addInput(e, button.inputs)}
             >
               {text}
             </button>
@@ -63,28 +61,27 @@ export default class Section extends React.Component {
     e.preventDefault();
 
     let data = document.getElementById(this.props.title);
-    let curResponses = {};
+    let curResponses = { title: this.props.title, responses: {} };
     for (const element of data.elements) {
-      if (element.id !== "" && element.value !== "") {
-        curResponses[element.id] = element.value;
+      if (element.name !== "" && element.value !== "") {
+        curResponses.responses[element.name] = element.value;
       }
     }
 
     let titleMap = {
-      'Contact': 'contactsSubmitted',
-      'Education': 'educationSubmitted',
-      'Employment': 'employmentSubmitted',
-      'Skills': 'skillsSubmitted'
-    }
+      Contact: "contactsSubmitted",
+      Education: "educationSubmitted",
+      "Employment History": "employmentSubmitted",
+      Skills: "skillsSubmitted",
+    };
 
     this.props.sendResponses({
       responses: [...this.props.prevResponses, curResponses],
-      [titleMap[this.props.title]]: true
+      [titleMap[this.props.title]]: true,
     });
 
     this.setState({
       renderedInputs: [],
-      renderedButtons: [],
     });
   }
 
@@ -93,8 +90,7 @@ export default class Section extends React.Component {
       <form onSubmit={(e) => this.nextSection(e)} id={this.props.title}>
         <h2>{this.props.title}</h2>
         {this.generateInputs(this.state.renderedInputs)}
-        {/**can I just do a map function for the buttons instead? */}
-        {this.generateButtons(this.state.renderedButtons)}
+        {this.generateButtons(this.props.buttons)}
         <button className="next-section" type="submit">
           {this.props.nextSectionText}
         </button>

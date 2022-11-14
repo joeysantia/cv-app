@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 export default class Input extends React.Component {
   constructor(props) {
@@ -6,6 +6,10 @@ export default class Input extends React.Component {
   }
 
   render() {
+    /**consider
+     * generalizing so that you can create
+     * a select table instead
+     */
     if (this.props.type === "states") {
       let states = [
         "",
@@ -73,11 +77,18 @@ export default class Input extends React.Component {
       return (
         <div className={this.props.class}>
           <label htmlFor={this.props.id}>{this.props.title}</label>
-          <select id={this.props.id} name={this.props.id}>
+          <select id={this.props.id} name={this.props.titl4}>
             {states.map((state) => {
               return <option value={state}>{state}</option>;
             })}
-          </select>
+          {this.props.value}</select>
+        </div>
+      );
+    } else if (this.props.type === "textarea") {
+      return (
+        <div className={this.props.class}>
+          <label htmlFor={this.props.id}>{this.props.title}</label>
+          <textarea id={this.props.id} name={this.props.title}>{this.props.value}</textarea>
         </div>
       );
     }
@@ -88,10 +99,10 @@ export default class Input extends React.Component {
         <input
           className={this.props.class}
           id={this.props.id}
-          name={this.props.name}
+          name={this.props.title}
           type={this.props.type}
           required={this.props.required}
-        ></input>
+        >{this.props.value}</input>
       </div>
     );
   }

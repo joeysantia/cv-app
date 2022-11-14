@@ -1,5 +1,6 @@
 import React from "react";
 import Section from "./Section";
+import Summary from "./Summary";
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -9,15 +10,13 @@ export default class Form extends React.Component {
       responses: [],
       contactsSubmitted: false,
       educationSubmitted: false,
-      experienceSubmitted: false,
+      employmentSubmitted: false,
       skillsSubmitted: false,
     };
     this.setFormState = this.setState.bind(this);
   }
 
   render() {
-    console.log(this.state.responses);
-
     let contactInputs = [
       {
         title: "First Name",
@@ -51,20 +50,28 @@ export default class Form extends React.Component {
         title: "Address Line 1 (optional)",
         id: "address-1",
         type: "text",
-        required: false,
+        required: true,
         class: "address",
       },
       {
         title: "Address Line 2 (optional)",
         id: "address-2",
         type: "text",
+        required: true,
         class: "address",
       },
-      { title: "City (optional)", id: "city", type: "text", class: "address" },
+      {
+        title: "City (optional)",
+        id: "city",
+        type: "text",
+        required: true,
+        class: "address",
+      },
       {
         title: "State (optional)",
         id: "state",
         type: "states",
+        required: true,
         class: "address",
       },
     ];
@@ -86,22 +93,43 @@ export default class Form extends React.Component {
         inputsRendered: false,
         inputs: [
           {
-            title: "Name of Institution",
+            title: "School Name",
             id: "school-name",
             type: "text",
             required: true,
             class: "education",
           },
           {
-            title: "Degree Earned",
+            title: "School Location",
             id: "degree-name",
             type: "text",
             required: true,
             class: "education",
           },
           {
-            title: "GPA",
-            id: "gpa",
+            title: "Start Month",
+            id: "start-month",
+            type: "month",
+            required: true,
+            class: "education",
+          },
+          {
+            title: "End Month",
+            id: "end-month",
+            type: "month",
+            required: true,
+            class: "education",
+          },
+          {
+            title: "Degree",
+            id: "degree",
+            type: "text",
+            required: true,
+            class: "education",
+          },
+          {
+            title: "Field of Study",
+            id: "field",
             type: "text",
             required: true,
             class: "education",
@@ -116,15 +144,111 @@ export default class Form extends React.Component {
         ],
       },
     ];
+    let employmentInputs = [];
+    let employmentButtons = [
+      {
+        id: "employment",
+        primaryText: "Add Employment",
+        inputsRendered: false,
+        inputs: [
+          {
+            title: "Position",
+            id: "position",
+            type: "text",
+            required: true,
+            class: "employment",
+          },
+          {
+            title: "Company Name",
+            id: "company-name",
+            type: "text",
+            required: true,
+            class: "education",
+          },
+          {
+            title: "Start Month",
+            id: "start-month",
+            type: "month",
+            required: true,
+            class: "employment",
+          },
+          {
+            title: "End Month",
+            id: "end-month",
+            type: "month",
+            required: true,
+            class: "employment",
+          },
+          {
+            title: "I currently work here",
+            id: "current",
+            type: "checkbox",
+            required: false,
+            class: "education",
+          },
+          {
+            title: "Description",
+            id: "description",
+            type: "textarea",
+            required: true,
+            class: "education",
+          },
+        ],
+      },
+    ];
+    let skillsInputs = [];
+    let skillsButtons = [
+      {
+        id: "skills",
+        primaryText: "Add Skill",
+        inputsRendered: false,
+        inputs: [
+          {
+            title: "Skill",
+            id: "skill",
+            type: "text",
+            required: true,
+            class: "skill",
+          },
+        ],
+      },
+    ];
 
     //this quasi-switch statement can probably be
     //solved with a dict, but not sure how yet.
     if (this.state.skillsSubmitted) {
-      return <Section title="Review" />;
-    } else if (this.state.experienceSubmitted) {
-      return <Section title="Skills" />;
+      console.log(this.state);
+      return (
+        <div>
+          {this.state.responses.map((data, index) => {
+            return <Summary title={data.title} responses={data.responses} index={index} />;
+          })}
+        </div>
+      );
+    } else if (this.state.employmentSubmitted) {
+      return (
+        <Section
+          title="Skills"
+          inputs={skillsInputs}
+          buttons={skillsButtons}
+          name="Skills"
+          nextSectionText="Review"
+          sendResponses={this.setFormState}
+          prevResponses={this.state.responses}
+        />
+      );
     } else if (this.state.educationSubmitted) {
-      return <Section title="Experience" />;
+      return (
+        <Section
+          title="Employment History"
+          inputs={employmentInputs}
+          buttons={employmentButtons}
+          name="Education"
+          nextSectionText="Move on to Skills"
+          sendResponses={this.setFormState}
+          prevResponses={this.state.responses}
+        />
+      );
     } else if (this.state.contactsSubmitted) {
       return (
         <Section

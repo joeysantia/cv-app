@@ -77,18 +77,33 @@ export default class Input extends React.Component {
       return (
         <div className={this.props.class}>
           <label htmlFor={this.props.id}>{this.props.title}</label>
-          <select id={this.props.id} name={this.props.titl4}>
+          <select
+            id={this.props.id}
+            name={this.props.title}
+            placeholder={this.props.placeholder}
+            required={this.props.required}
+            onChange={this.props.onInput}
+          >
             {states.map((state) => {
               return <option value={state}>{state}</option>;
             })}
-          {this.props.value}</select>
+            {this.props.value}
+          </select>
         </div>
       );
     } else if (this.props.type === "textarea") {
       return (
         <div className={this.props.class}>
           <label htmlFor={this.props.id}>{this.props.title}</label>
-          <textarea id={this.props.id} name={this.props.title}>{this.props.value}</textarea>
+          <textarea
+            id={this.props.id}
+            name={this.props.title}
+            placeholder={this.props.placeholder}
+            required={this.props.required}
+            onChange={this.props.onInput}
+          >
+            {this.props.value}
+          </textarea>
         </div>
       );
     }
@@ -101,8 +116,11 @@ export default class Input extends React.Component {
           id={this.props.id}
           name={this.props.title}
           type={this.props.type}
+          placeholder={this.props.placeholder}
           required={this.props.required}
-        >{this.props.value}</input>
+          onChange={(e) => this.props.onInput}
+        >{this.props.value}
+        </input>
       </div>
     );
   }

@@ -1,15 +1,29 @@
+import React from 'react'
 import Header from './components/Header'
 import Form from './components/Form'
 import './App.css'
 
-function App() {
+export default class App extends React.Component {
   
-  return (
-    <div>
-      <Header title='CV Builder' />
-      <Form />
-    </div>
-    )
-}
+  constructor(props) {
+    super(props)
 
-export default App;
+    this.state = {
+      inReview: false 
+    }
+
+  }
+
+  render() {
+    if (this.state.inReview) {
+      return <div></div>
+    } else {
+      return (
+        <div>
+        <Header title='CV Builder' />
+        <Form />
+      </div>
+      )
+    }
+  }
+}

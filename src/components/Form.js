@@ -1,5 +1,6 @@
 import React from "react";
-import Section from "./Section";
+import FixedFields from "./FixedFields";
+import ButtonFields from "./ButtonFields";
 import Summary from "./Summary";
 
 export default class Form extends React.Component {
@@ -16,7 +17,52 @@ export default class Form extends React.Component {
     this.setFormState = this.setState.bind(this);
   }
 
+  inputIsValid() {
+    console.log(this);
+    this.setState({
+      canAddInput: true,
+    });
+  }
+
+  changeForm(e, sectionTitle, sectionButtons) {
+    e.preventDefault();
+    console.log("wait, what?");
+
+    let data = document.getElementById(sectionTitle);
+    let curResponses = {
+      title: sectionTitle,
+      addButton: sectionButtons,
+      responses: [],
+    };
+    for (const element of data.elements) {
+      if (element.name !== "" && element.value !== "") {
+        curResponses.responses.push({
+          title: element.name,
+          value: element.value,
+          id: element.id,
+          name: element.name,
+          placeholder: element.value, 
+          type: element.type,
+          required: element.required,
+        })
+      }
+    }
+
+    let titleMap = {
+      Contact: "contactsSubmitted",
+      Education: "educationSubmitted",
+      "Employment History": "employmentSubmitted",
+      Skills: "skillsSubmitted",
+    };
+
+    this.setState({
+      responses: [...this.state.responses, curResponses],
+      [titleMap[sectionTitle]]: true,
+    });
+  }
+
   render() {
+    console.log(this.state);
     let contactInputs = [
       {
         title: "First Name",
@@ -81,7 +127,24 @@ export default class Form extends React.Component {
         id: "website",
         primaryText: "Add Website",
         inputsRendered: false,
-        inputs: [{ title: "Website Title", type: "text", class: "website" }],
+        inputs: [
+          {
+            title: "Website Label",
+            id: "website-label",
+            type: "text",
+            class: "website-label",
+            required: false,
+            //onInput: this.inputIsValid,
+          },
+          {
+            title: "Website URL",
+            id: "website-url",
+            type: "text",
+            class: "website-url",
+            required: false,
+            //onInput: this.inputIsValid,
+          },
+        ],
       },
     ];
 
@@ -221,61 +284,93 @@ export default class Form extends React.Component {
       return (
         <div>
           {this.state.responses.map((data, index) => {
-            return <Summary title={data.title} responses={data.responses} index={index} />;
+            return (
+              <Summary
+                title={data.title}
+                responses={data.responses}
+                index={index}
+                formResponses={this.state.responses}
+                addButton={data.addButton}
+                updateForm={this.setFormState}
+              />
+            );
           })}
+          <button type='button'>Generate PDF</button>
         </div>
       );
     } else if (this.state.employmentSubmitted) {
       return (
-        <Section
-          title="Skills"
-          inputs={skillsInputs}
-          buttons={skillsButtons}
-          name="Skills"
-          nextSectionText="Review"
-          sendResponses={this.setFormState}
-          prevResponses={this.state.responses}
-        />
+        <form
+          id="Skills"
+          onSubmit={(e) => this.changeForm(e, "Skills", skillsButtons)}
+        >
+          <ButtonFields
+            title="Skills"
+            inputs={skillsInputs}
+            buttons={skillsButtons}
+            name="Skills"
+            nextSectionText="Review"
+            sendResponses={this.setFormState}
+            prevResponses={this.state.responses}
+          />
+        </form>
       );
     } else if (this.state.educationSubmitted) {
       return (
-        <Section
-          title="Employment History"
-          inputs={employmentInputs}
-          buttons={employmentButtons}
-          name="Education"
-          nextSectionText="Move on to Skills"
-          sendResponses={this.setFormState}
-          prevResponses={this.state.responses}
-        />
+        <form
+          id="Employment History"
+          onSubmit={(e) =>
+            this.changeForm(e, "Employment History", employmentButtons)
+          }
+        >
+          <ButtonFields
+            title="Employment History"
+            inputs={employmentInputs}
+            buttons={employmentButtons}
+            name="Education"
+            nextSectionText="Move on to Skills"
+            sendResponses={this.setFormState}
+            prevResponses={this.state.responses}
+          />
+        </form>
       );
     } else if (this.state.contactsSubmitted) {
       return (
-        <Section
-          title="Education"
-          inputs={educationInputs}
-          buttons={educationButtons}
-          name="Education"
-          nextSectionText="Move on to Employment"
-          addResponses={this.setFormState}
-          nextSection={this.nextSection}
-          sendResponses={this.setFormState}
-          prevResponses={this.state.responses}
-        />
+        <form
+          id="Education"
+          onSubmit={(e) => this.changeForm(e, "Education", educationButtons)}
+        >
+          <ButtonFields
+            title="Education"
+            inputs={educationInputs}
+            buttons={educationButtons}
+            name="Education"
+            nextSectionText="Move on to Employment"
+            addResponses={this.setFormState}
+            nextSection={this.nextSection}
+            sendResponses={this.setFormState}
+            prevResponses={this.state.responses}
+          />
+        </form>
       );
     } else {
       return (
-        <Section
-          title="Contact"
-          inputs={contactInputs}
-          buttons={contactButtons}
-          name="Contact"
-          nextSectionText="Move on to Education"
-          addResponses={this.setFormState}
-          nextSection={this.nextSection}
-          sendResponses={this.setFormState}
-          prevResponses={this.state.responses}
-        />
+        <form
+          id="Contact"
+          onSubmit={(e) => this.changeForm(e, "Contact", contactButtons)}
+        >
+          <FixedFields inputs={contactInputs} />
+          <ButtonFields
+            inputs={[]}
+            buttons={contactButtons}
+            name="Contact"
+            nextSectionText="Move on to Education"
+            addResponses={this.setFormState}
+            nextSection={this.nextSection}
+            sendResponses={this.setFormState}
+            prevResponses={this.state.responses}
+          />
+        </form>
       );
     }
   }

@@ -1,25 +1,61 @@
 import React from "react";
 import Input from "./Input"
+import FixedFields from "./FixedFields"
+import ButtonFields from "./ButtonFields";
 
 export default class Summary extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      responses: this.props.responses,
       isStaged: true,
     };
   }
 
-  renderInputs(responses) {
-    return responses.map(response => {
-      return <Input 
-              />
+  addInputs() {
+    //add logic to check that previous webiste fields have been filled out
+    let curResponses = this.state.responses
+    console.log(this.props.addButton[0].inputs)
+    this.setState({
+      responses: [...this.state.responses, ...this.props.addButton[0].inputs]
     })
+    console.log(this.state.responses)
   }
 
-  editSection() {}
+  updateInputs(e) {
+    e.preventDefault()
+    console.log(this.props.formResponses[this.props.index])
+    let data = document.getElementById(this.props.title)
+    console.log(data.elements)
+    console.log(this.state.responses)
+    let newResponses = this.props.formResponses
+    let curResponses = this.state.responses
 
-  deleteSection() {}
+    for (let i = 0; i < curResponses.length; i++) {
+      curResponses[i].value = data.elements[i].value
+      this.state.responses[i].placeholder = data.elements[i].value
+    }
+    console.log(curResponses)
+    
+    /*for (const element of data.elements) {
+      if (element.value || element.placeholder) {
+        curResponses.responses[element.name] = (element.value ? element.value : element.placeholder)
+      }
+    }
+    console.log(curResponses)
+    */
+    newResponses[this.props.index].responses = curResponses
+    console.log(newResponses)
+    this.props.updateForm({
+      responses: newResponses
+    })
+    this.setState({isStaged: true})
+  }
+
+  deleteSection() {
+
+  }
 
   /**
    *
@@ -35,29 +71,48 @@ export default class Summary extends React.Component {
       return (
         <div className="summary-box">
           <h2>{this.props.title}</h2>
-          <button onClick={(e) => console.log('hello!')}>Edit</button>
-          {Object.keys(this.props.responses).map((key) => {
+          <button onClick={(e) => this.setState({isStaged: false})}>Edit</button>
+          {/**Make the button below only appear for designated sections -  */}
+          <button onClick={(e) => this.deleteSection()}>Delete</button>
+          {this.props.responses.map((response) => {
             return (
               <div>
-                <h3>{key}</h3>
-                <p>{this.props.responses[key]}</p>
+                <h3>{response.title}</h3>
+                <p>{response.value}</p>
               </div>
             );
           })}
         </div>
       );
     } else {
+      //this should just be a Section
       return (
-        <div>
-          {Object.keys(this.props.responses.map).map((key) => {
-            let value = this.props.responses[key]
+        <form id='Contact' onSubmit={(e) => this.updateInputs(e)}>
+        <FixedFields 
+          inputs={this.state.responses}/>
+        <button type='button' onClick={(e) => this.addInputs()}>Add Website</button>
+        <button type='submit'>Confirm</button>
+        </form>
+        /*
+        <form id={this.props.title} onSubmit={(e) => this.updateInputs(e)}>
+          <h2>{this.props.title}</h2>
+          {Object.keys(this.state.responses).map((key) => {
+            let value = this.state.responses[key]
             return (
+              <div>
               <Input
-                value={value}
+                title={key}
+                name={key}
+                placeholder={value}
                  />
+              </div>
+              
             )
           })}
-        </div>
+        <button type='button' onClick={(e) => this.addInputs()}>Add</button>
+        <button type='submit'>Confirm</button>
+        </form>
+        */
       )
     }
   }

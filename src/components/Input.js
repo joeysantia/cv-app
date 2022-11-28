@@ -11,16 +11,14 @@ export default class Input extends React.Component {
   }
 
   onInput(e) {
+    console.log(e.target)
     this.setState({
       value: e.target.value
     })
   }
 
   render() {
-    /**consider
-     * generalizing so that you can create
-     * a select table instead
-     */
+   
     if (this.props.type === "states") {
       let states = [
         "",
@@ -91,9 +89,8 @@ export default class Input extends React.Component {
           <select
             id={this.props.id}
             name={this.props.title}
-            placeholder={this.props.placeholder}
             required={this.props.required}
-            onChange={(e) => this.onInput()}
+            onChange={(e) => this.onInput(e)}
           >
             {states.map((state, i) => {
               return <option key={i} value={state}>{state}</option>;
@@ -108,9 +105,8 @@ export default class Input extends React.Component {
           <textarea
             id={this.props.id}
             name={this.props.title}
-            placeholder={this.props.placeholder}
             required={this.props.required}
-            onChange={(e) => this.onInput()}
+            onChange={(e) => this.onInput(e)}
           >
           </textarea>
         </div>
@@ -128,7 +124,7 @@ export default class Input extends React.Component {
           type={this.props.type}
           required={this.props.required}
           onChange={(e) => this.onInput(e)}
-          value={this.state.value ? this.state.value : ''}
+          value={this.state.value}
         ></input>
       </div>
     );

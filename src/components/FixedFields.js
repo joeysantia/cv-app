@@ -21,7 +21,6 @@ export default class FixedFields extends React.Component {
               htmlFor={input.id}
               id={input.id}
               required={input.required}
-              //placeholder={input.placeholder}
               value={input.value}
             />
           );

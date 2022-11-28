@@ -1,29 +1,20 @@
-import React from 'react'
-import Header from './components/Header'
-import Form from './components/Form'
-import './App.css'
+import React from "react";
+import Header from "./components/Header";
+import Form from "./components/Form";
+import PDF from "./components/PDF";
+import "./App.css";
 
 export default class App extends React.Component {
-  
   constructor(props) {
-    super(props)
-
-    this.state = {
-      inReview: false 
-    }
-
+    super(props);
   }
 
   render() {
-    if (this.state.inReview) {
-      return <div></div>
-    } else {
-      return (
-        <div>
-        <Header title='CV Builder' />
+    return (
+      <div>
+        <Header title="CV Builder" />
         <Form />
       </div>
-      )
-    }
+    );
   }
 }

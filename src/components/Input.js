@@ -1,8 +1,19 @@
 import React from "react";
+import "./Input.css"
 
 export default class Input extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      value: this.props.value
+    }
+  }
+
+  onInput(e) {
+    this.setState({
+      value: e.target.value
+    })
   }
 
   render() {
@@ -75,52 +86,50 @@ export default class Input extends React.Component {
       ];
 
       return (
-        <div className={this.props.class}>
+        <div className="input">
           <label htmlFor={this.props.id}>{this.props.title}</label>
           <select
             id={this.props.id}
             name={this.props.title}
             placeholder={this.props.placeholder}
             required={this.props.required}
-            onChange={this.props.onInput}
+            onChange={(e) => this.onInput()}
           >
-            {states.map((state) => {
-              return <option value={state}>{state}</option>;
+            {states.map((state, i) => {
+              return <option key={i} value={state}>{state}</option>;
             })}
-            {this.props.value}
           </select>
         </div>
       );
     } else if (this.props.type === "textarea") {
       return (
-        <div className={this.props.class}>
+        <div className="input">
           <label htmlFor={this.props.id}>{this.props.title}</label>
           <textarea
             id={this.props.id}
             name={this.props.title}
             placeholder={this.props.placeholder}
             required={this.props.required}
-            onChange={this.props.onInput}
+            onChange={(e) => this.onInput()}
           >
-            {this.props.value}
           </textarea>
         </div>
       );
     }
 
     return (
-      <div className={this.props.class}>
+      <div className="input">
         <label htmlFor={this.props.id}>{this.props.title}</label>
         <input
           className={this.props.class}
+          contentEditable={true}
           id={this.props.id}
           name={this.props.title}
           type={this.props.type}
-          placeholder={this.props.placeholder}
           required={this.props.required}
-          onChange={(e) => this.props.onInput}
-        >{this.props.value}
-        </input>
+          onChange={(e) => this.onInput(e)}
+          value={this.state.value ? this.state.value : ''}
+        ></input>
       </div>
     );
   }

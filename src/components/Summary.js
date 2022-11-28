@@ -37,6 +37,7 @@ export default class Summary extends React.Component {
       this.state.responses[i].placeholder = data.elements[i].value
     }
     console.log(curResponses)
+    console.log(newResponses)
     
     /*for (const element of data.elements) {
       if (element.value || element.placeholder) {
@@ -74,9 +75,9 @@ export default class Summary extends React.Component {
           <button onClick={(e) => this.setState({isStaged: false})}>Edit</button>
           {/**Make the button below only appear for designated sections -  */}
           <button onClick={(e) => this.deleteSection()}>Delete</button>
-          {this.props.responses.map((response) => {
+          {this.props.responses.map((response, i) => {
             return (
-              <div>
+              <div key={i}>
                 <h3>{response.title}</h3>
                 <p>{response.value}</p>
               </div>
@@ -86,7 +87,9 @@ export default class Summary extends React.Component {
       );
     } else {
       //this should just be a Section
+      console.log(this.state.responses)
       return (
+        
         <form id='Contact' onSubmit={(e) => this.updateInputs(e)}>
         <FixedFields 
           inputs={this.state.responses}/>

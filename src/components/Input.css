@@ -1,0 +1,13 @@
+.input {
+    display: flex;
+    flex-direction: column;
+}
+
+.input > input, 
+.input > select {
+    max-width: 13rem;
+}
+
+.input > textarea {
+    max-width: 300px;
+}

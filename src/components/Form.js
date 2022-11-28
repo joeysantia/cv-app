@@ -2,6 +2,8 @@ import React from "react";
 import FixedFields from "./FixedFields";
 import ButtonFields from "./ButtonFields";
 import Summary from "./Summary";
+import PDF from "./PDF";
+import "./Form.css";
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -13,20 +15,13 @@ export default class Form extends React.Component {
       educationSubmitted: false,
       employmentSubmitted: false,
       skillsSubmitted: false,
+      allConfirmed: false,
     };
     this.setFormState = this.setState.bind(this);
   }
 
-  inputIsValid() {
-    console.log(this);
-    this.setState({
-      canAddInput: true,
-    });
-  }
-
   changeForm(e, sectionTitle, sectionButtons) {
     e.preventDefault();
-    console.log("wait, what?");
 
     let data = document.getElementById(sectionTitle);
     let curResponses = {
@@ -41,10 +36,10 @@ export default class Form extends React.Component {
           value: element.value,
           id: element.id,
           name: element.name,
-          placeholder: element.value, 
+          //placeholder: element.value,
           type: element.type,
           required: element.required,
-        })
+        });
       }
     }
 
@@ -62,63 +57,54 @@ export default class Form extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     let contactInputs = [
       {
         title: "First Name",
         id: "first-name",
         type: "text",
         required: true,
-        class: "set",
       },
       {
         title: "Last Name",
         id: "last-name",
         type: "text",
         required: true,
-        class: "set",
       },
       {
         title: "Email Address",
         id: "email",
         type: "email",
         required: true,
-        class: "set",
       },
       {
         title: "Phone Number",
         id: "phone",
         type: "phone",
         required: true,
-        class: "set",
       },
       {
         title: "Address Line 1 (optional)",
         id: "address-1",
         type: "text",
         required: true,
-        class: "address",
       },
       {
         title: "Address Line 2 (optional)",
         id: "address-2",
         type: "text",
         required: true,
-        class: "address",
       },
       {
         title: "City (optional)",
         id: "city",
         type: "text",
         required: true,
-        class: "address",
       },
       {
         title: "State (optional)",
         id: "state",
         type: "states",
         required: true,
-        class: "address",
       },
     ];
 
@@ -132,23 +118,18 @@ export default class Form extends React.Component {
             title: "Website Label",
             id: "website-label",
             type: "text",
-            class: "website-label",
             required: false,
-            //onInput: this.inputIsValid,
           },
           {
             title: "Website URL",
             id: "website-url",
             type: "text",
-            class: "website-url",
             required: false,
-            //onInput: this.inputIsValid,
           },
         ],
       },
     ];
 
-    let educationInputs = [];
     let educationButtons = [
       {
         id: "education",
@@ -160,54 +141,46 @@ export default class Form extends React.Component {
             id: "school-name",
             type: "text",
             required: true,
-            class: "education",
           },
           {
             title: "School Location",
             id: "degree-name",
             type: "text",
             required: true,
-            class: "education",
           },
           {
             title: "Start Month",
             id: "start-month",
             type: "month",
             required: true,
-            class: "education",
           },
           {
             title: "End Month",
             id: "end-month",
             type: "month",
             required: true,
-            class: "education",
           },
           {
             title: "Degree",
             id: "degree",
             type: "text",
             required: true,
-            class: "education",
           },
           {
             title: "Field of Study",
             id: "field",
             type: "text",
             required: true,
-            class: "education",
           },
           {
             title: "Description",
             id: "description",
             type: "textarea",
             required: true,
-            class: "education",
           },
         ],
       },
     ];
-    let employmentInputs = [];
     let employmentButtons = [
       {
         id: "employment",
@@ -219,47 +192,40 @@ export default class Form extends React.Component {
             id: "position",
             type: "text",
             required: true,
-            class: "employment",
           },
           {
             title: "Company Name",
             id: "company-name",
             type: "text",
             required: true,
-            class: "education",
           },
           {
             title: "Start Month",
             id: "start-month",
             type: "month",
             required: true,
-            class: "employment",
           },
           {
             title: "End Month",
             id: "end-month",
             type: "month",
             required: true,
-            class: "employment",
           },
           {
             title: "I currently work here",
             id: "current",
             type: "checkbox",
             required: false,
-            class: "education",
           },
           {
             title: "Description",
             id: "description",
             type: "textarea",
             required: true,
-            class: "education",
           },
         ],
       },
     ];
-    let skillsInputs = [];
     let skillsButtons = [
       {
         id: "skills",
@@ -271,7 +237,6 @@ export default class Form extends React.Component {
             id: "skill",
             type: "text",
             required: true,
-            class: "skill",
           },
         ],
       },
@@ -279,23 +244,38 @@ export default class Form extends React.Component {
 
     //this quasi-switch statement can probably be
     //solved with a dict, but not sure how yet.
-    if (this.state.skillsSubmitted) {
-      console.log(this.state);
+
+    if (this.state.allConfirmed) {
+      return (
+        <PDF
+          firstName={this.state.responses[0].responses[0].value}
+          lastName={this.state.responses[0].responses[1].value}
+        />
+      );
+    } else if (this.state.skillsSubmitted) {
+      console.log(this.state)
       return (
         <div>
-          {this.state.responses.map((data, index) => {
+          {this.state.responses.map((data, i) => {
             return (
               <Summary
                 title={data.title}
                 responses={data.responses}
-                index={index}
+                index={i}
+                key={i}
+                //a ha! can I just send one response here
                 formResponses={this.state.responses}
                 addButton={data.addButton}
                 updateForm={this.setFormState}
               />
             );
           })}
-          <button type='button'>Generate PDF</button>
+          <button
+            type="button"
+            onClick={(e) => this.setState({ allConfirmed: true })}
+          >
+            Generate PDF
+          </button>
         </div>
       );
     } else if (this.state.employmentSubmitted) {
@@ -306,7 +286,6 @@ export default class Form extends React.Component {
         >
           <ButtonFields
             title="Skills"
-            inputs={skillsInputs}
             buttons={skillsButtons}
             name="Skills"
             nextSectionText="Review"
@@ -325,7 +304,6 @@ export default class Form extends React.Component {
         >
           <ButtonFields
             title="Employment History"
-            inputs={employmentInputs}
             buttons={employmentButtons}
             name="Education"
             nextSectionText="Move on to Skills"
@@ -342,7 +320,6 @@ export default class Form extends React.Component {
         >
           <ButtonFields
             title="Education"
-            inputs={educationInputs}
             buttons={educationButtons}
             name="Education"
             nextSectionText="Move on to Employment"
@@ -361,7 +338,6 @@ export default class Form extends React.Component {
         >
           <FixedFields inputs={contactInputs} />
           <ButtonFields
-            inputs={[]}
             buttons={contactButtons}
             name="Contact"
             nextSectionText="Move on to Education"

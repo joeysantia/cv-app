@@ -1,0 +1,13 @@
+.button-box {
+    display: flex;
+    gap: 2rem;
+}
+
+.button-box button {
+    border-radius: 4px;
+}
+
+.button-box button:hover {
+    background-color: green;
+    color: white
+}

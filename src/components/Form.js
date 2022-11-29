@@ -250,6 +250,7 @@ export default class Form extends React.Component {
         <PDF
           firstName={this.state.responses[0].responses[0].value}
           lastName={this.state.responses[0].responses[1].value}
+          responses={this.state.responses}
         />
       );
     } else if (this.state.skillsSubmitted) {

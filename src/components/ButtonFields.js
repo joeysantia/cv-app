@@ -27,22 +27,39 @@ export default class ButtonFields extends React.Component {
   }
 
   deleteBox(i) {
-    
-   let buttonInputs = this.state.buttonInputs
-   console.log(buttonInputs)
-   let curInputs = document.querySelectorAll(`div[index="${i}"] input`)
-   console.log(curInputs)
-   for (let j = 0; j < buttonInputs[i].inputs.length; j++) {
-      buttonInputs[i].inputs[j].value = curInputs[j].value
-      console.log(curInputs[j].value)
-    }
 
-   console.log(buttonInputs)
+    let buttonInputs = this.state.buttonInputs
+    
+  /*
+  This whole thing is a big mess
+  Go solve other problems first and then come back 
+
+   console.log(this.state.buttonInputs)
+   let buttonInputs = this.state.buttonInputs
+   //console.log(buttonInputs)
+   let curInputs = document.querySelectorAll(`.mini-form input`)
+   console.log(curInputs)
+   
+    * i found it!!! the curInputs counter needs to be different
+    * no need for a double loop 
+    * 
+    * this is killing me 
+    * find anoth
+    
+  
+   let index = 0
+   for (const button of buttonInputs) {
+    for (let j = 0; j < button.inputs.length; j++) {
+      console.log(button.inputs[j].value, curInputs[index].value)
+      button.inputs[j].value = curInputs[index++].value
+    }
+   }
+   */
 
    this.setState({
     buttonInputs: [...buttonInputs.slice(0, i), ...buttonInputs.slice(i + 1)]
   })
-   
+
   }
 
   generateInputs(inputs) {
@@ -88,9 +105,26 @@ export default class ButtonFields extends React.Component {
 
   addInput(e, inputs) {
     e.preventDefault();
-      this.setState({
-        buttonInputs: [...this.state.buttonInputs, inputs],
-      });
+
+    let boxes = document.querySelectorAll('.mini-form input')
+
+    if (boxes.length) {
+      let lastInput = [...boxes].slice(-2)
+
+    for (const input of lastInput) {
+      if (!input.value) {
+        return 
+      }
+    }
+    }
+
+    this.setState({
+      buttonInputs: [...this.state.buttonInputs, inputs],
+    });
+
+    
+    
+      
   }
 
   render() {

@@ -1,14 +1,13 @@
 import React from "react";
 import Input from "./Input";
-import "./ButtonFields.css"
+import "./ButtonFields.css";
 
 export default class ButtonFields extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      renderedInputs: [],
-      buttonInputs: []
+      boxes: [],
     };
   }
 
@@ -16,53 +15,49 @@ export default class ButtonFields extends React.Component {
     return (
       <div>
         {boxes.map((box, i) => {
-          return (<div key={i} index={i} className='mini-form'>
-            <button className='delete' type='button' onClick={(e) => this.deleteBox(i)}>Delete</button>
-            {this.generateInputs(box.inputs)}
-          </div>
-          )
+          return (
+            <div key={i} index={i} className="mini-form">
+              <button
+                className="delete"
+                type="button"
+                onClick={(e) => this.deleteBox(i)}
+              >
+                Delete
+              </button>
+              {this.generateInputs(box.inputs)}
+            </div>
+          );
         })}
       </div>
-    )
+    );
   }
 
   deleteBox(i) {
-
-    let buttonInputs = this.state.buttonInputs
+    let boxes = this.state.boxes;
+    let curButtons = document.querySelectorAll(".mini-form input");
+    console.log("current values:", curButtons);
+    console.log("state:", boxes);
+    console.log("index:", i);
     
-  /*
-  This whole thing is a big mess
-  Go solve other problems first and then come back 
+    let curIndex = 0
 
-   console.log(this.state.buttonInputs)
-   let buttonInputs = this.state.buttonInputs
-   //console.log(buttonInputs)
-   let curInputs = document.querySelectorAll(`.mini-form input`)
-   console.log(curInputs)
-   
-    * i found it!!! the curInputs counter needs to be different
-    * no need for a double loop 
-    * 
-    * this is killing me 
-    * find anoth
-    
-  
-   let index = 0
-   for (const button of buttonInputs) {
-    for (let j = 0; j < button.inputs.length; j++) {
-      console.log(button.inputs[j].value, curInputs[index].value)
-      button.inputs[j].value = curInputs[index++].value
+    for (const button of boxes) {
+      for (const input of button.inputs) {
+        console.log(input.value, curButtons[curIndex].value)
+        input.value = curButtons[curIndex++].value
+        console.log(input.value)
+      }
     }
-   }
-   */
-
-   this.setState({
-    buttonInputs: [...buttonInputs.slice(0, i), ...buttonInputs.slice(i + 1)]
-  })
-
+    
+    this.setState({
+      boxes: [...boxes.slice(0, i), ...boxes.slice(i + 1)],
+    });
+    
+    //console.log("updated state:", this.state.boxes);
   }
 
   generateInputs(inputs) {
+    console.log(inputs)
     return (
       <div>
         {inputs.map((input, i) => {
@@ -75,6 +70,7 @@ export default class ButtonFields extends React.Component {
               name={input.id}
               htmlFor={input.id}
               id={input.id}
+              value={input.value}
               required={input.required}
             />
           );
@@ -93,7 +89,7 @@ export default class ButtonFields extends React.Component {
               key={i}
               id={button.id}
               type="button"
-              onClick={(e) => this.addInput(e, button)}
+              onClick={(e) => this.addBox(e, this.props.buttons[0])}
             >
               {text}
             </button>
@@ -103,41 +99,42 @@ export default class ButtonFields extends React.Component {
     );
   }
 
-  addInput(e, inputs) {
+  addBox(e, inputs) {
     e.preventDefault();
 
-    let boxes = document.querySelectorAll('.mini-form input')
+    let boxes = document.querySelectorAll(".mini-form input");
 
     if (boxes.length) {
-      let lastInput = [...boxes].slice(-2)
+      console.log("theres a box");
+      let lastInput = [...boxes].slice(-2);
 
-    for (const input of lastInput) {
-      if (!input.value) {
-        return 
+      for (const input of lastInput) {
+        if (!input.value) {
+          return;
+        }
       }
     }
-    }
-
     this.setState({
-      buttonInputs: [...this.state.buttonInputs, inputs],
+      boxes: [...this.state.boxes, {inputs: [...inputs]}],
     });
+  }
 
-    
-    
-      
+  componentDidUpdate() {
+    console.log('just received some props!')
   }
 
   render() {
     return (
       <div>
         <h2>{this.props.title}</h2>
-        {this.generateInputs(this.state.renderedInputs)}
-        {this.generateBoxes(this.state.buttonInputs)}
+        {this.generateBoxes(this.state.boxes)}
         <div className="button-box">
-        {this.generateButtons(this.props.buttons)}
-        <button className="next-section" type="submit" >
-          {this.props.nextSectionText}
-        </button>
+          <button type='button' onClick={(e) => this.addBox(e, this.props.inputs)}>{this.props.button.text}</button>
+          <button className="next-section" type="submit">
+            {this.props.nextSectionText}
+          </button>
+          <button type='button' onClick={(e) => console.log(this.state.boxes)}>Check Boxes</button>
+          <button type='button' onClick={(e) => console.log(this.props)}>Check props</button>
         </div>
       </div>
     );

@@ -3,6 +3,7 @@ import FixedFields from "./FixedFields";
 import ButtonFields from "./ButtonFields";
 import Summary from "./Summary";
 import PDF from "./PDF";
+import { format } from 'date-fns'
 import "./Form.css";
 
 export default class Form extends React.Component {
@@ -13,20 +14,20 @@ export default class Form extends React.Component {
       responses: [],
       contactsSubmitted: false,
       educationSubmitted: false,
-      employmentSubmitted: false,
+      experienceSubmitted: false,
       skillsSubmitted: false,
       allConfirmed: false,
     };
     this.setFormState = this.setState.bind(this);
   }
 
-  changeForm(e, sectionTitle, sectionButtons) {
+  changeForm(e, sectionTitle, sectionButton) {
     e.preventDefault();
 
     let data = document.getElementById(sectionTitle);
     let curResponses = {
       title: sectionTitle,
-      addButton: sectionButtons,
+      addButton: sectionButton,
       responses: [],
     };
     for (const element of data.elements) {
@@ -36,7 +37,6 @@ export default class Form extends React.Component {
           value: element.value,
           id: element.id,
           name: element.name,
-          //placeholder: element.value,
           type: element.type,
           required: element.required,
         });
@@ -46,7 +46,7 @@ export default class Form extends React.Component {
     let titleMap = {
       Contact: "contactsSubmitted",
       Education: "educationSubmitted",
-      "Employment History": "employmentSubmitted",
+      Experience: "experienceSubmitted",
       Skills: "skillsSubmitted",
     };
 
@@ -83,37 +83,38 @@ export default class Form extends React.Component {
         required: true,
       },
       {
-        title: "Address Line 1 (optional)",
+        title: "Address Line 1",
         id: "address-1",
         type: "text",
         required: true,
       },
       {
-        title: "Address Line 2 (optional)",
+        title: "Address Line 2",
         id: "address-2",
         type: "text",
-        required: true,
+        required: false,
       },
       {
-        title: "City (optional)",
+        title: "City",
         id: "city",
         type: "text",
         required: true,
       },
       {
-        title: "State (optional)",
+        title: "State",
         id: "state",
         type: "states",
         required: true,
       },
     ];
 
-    let contactButtons = [
+    let contactButton = 
       {
         id: "website",
-        primaryText: "Add Website",
+        text: "Add Website",
         inputsRendered: false,
-        inputs: [
+      }
+    let contactButtonInputs = [
           {
             title: "Website Label",
             id: "website-label",
@@ -126,16 +127,14 @@ export default class Form extends React.Component {
             type: "text",
             required: false,
           },
-        ],
-      },
-    ];
+        ]
 
-    let educationButtons = [
+    let educationButton = 
       {
         id: "education",
-        primaryText: "Add Education",
-        inputsRendered: false,
-        inputs: [
+        text: "Add Education",
+      }
+    let educationInputs = [
           {
             title: "School Name",
             id: "school-name",
@@ -178,15 +177,14 @@ export default class Form extends React.Component {
             type: "textarea",
             required: true,
           },
-        ],
-      },
-    ];
-    let employmentButtons = [
+        ]
+
+    let experienceButton = 
       {
-        id: "employment",
-        primaryText: "Add Employment",
-        inputsRendered: false,
-        inputs: [
+        id: "experience",
+        text: "Add Experience",
+      }
+      let experienceInputs = [
           {
             title: "Position",
             id: "position",
@@ -223,38 +221,25 @@ export default class Form extends React.Component {
             type: "textarea",
             required: true,
           },
-        ],
-      },
-    ];
-    let skillsButtons = [
+        ]
+    let skillsButton = 
       {
         id: "skills",
-        primaryText: "Add Skill",
-        inputsRendered: false,
-        inputs: [
+        text: "Add Skill",
+      }
+    let skillsInputs = [
           {
             title: "Skill",
             id: "skill",
             type: "text",
             required: true,
           },
-        ],
-      },
-    ];
+        ]
 
     //this quasi-switch statement can probably be
     //solved with a dict, but not sure how yet.
-
-    if (this.state.allConfirmed) {
-      return (
-        <PDF
-          firstName={this.state.responses[0].responses[0].value}
-          lastName={this.state.responses[0].responses[1].value}
-          responses={this.state.responses}
-        />
-      );
-    } else if (this.state.skillsSubmitted) {
-      console.log(this.state)
+    
+    if (this.state.skillsSubmitted) {
       return (
         <div>
           {this.state.responses.map((data, i) => {
@@ -273,40 +258,46 @@ export default class Form extends React.Component {
           })}
           <button
             type="button"
-            onClick={(e) => this.setState({ allConfirmed: true })}
+            onClick={(e) => this.props.updateApp({
+               inputsConfirmed: true,
+               responses: this.state.responses  
+              })}
           >
             Generate PDF
           </button>
         </div>
       );
-    } else if (this.state.employmentSubmitted) {
+    } else if (this.state.experienceSubmitted) {
       return (
         <form
           id="Skills"
-          onSubmit={(e) => this.changeForm(e, "Skills", skillsButtons)}
+          onSubmit={(e) => this.changeForm(e, "Skills", skillsButton)}
         >
+          <div>
           <ButtonFields
             title="Skills"
-            buttons={skillsButtons}
+            button={skillsButton}
+            inputs={skillsInputs}
             name="Skills"
             nextSectionText="Review"
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
-          />
+          /></div>
         </form>
       );
     } else if (this.state.educationSubmitted) {
       return (
         <form
-          id="Employment History"
+          id="Experience"
           onSubmit={(e) =>
-            this.changeForm(e, "Employment History", employmentButtons)
+            this.changeForm(e, "Experience", experienceButton)
           }
         >
           <ButtonFields
-            title="Employment History"
-            buttons={employmentButtons}
-            name="Education"
+            title="Experience"
+            button={experienceButton}
+            inputs={experienceInputs}
+            name="Experience"
             nextSectionText="Move on to Skills"
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
@@ -317,33 +308,35 @@ export default class Form extends React.Component {
       return (
         <form
           id="Education"
-          onSubmit={(e) => this.changeForm(e, "Education", educationButtons)}
+          onSubmit={(e) => this.changeForm(e, "Education", educationButton)}
         >
+          <div>
           <ButtonFields
             title="Education"
-            buttons={educationButtons}
+            button={educationButton}
+            inputs={educationInputs}
             name="Education"
-            nextSectionText="Move on to Employment"
+            nextSectionText="Move on to Experience"
             addResponses={this.setFormState}
-            nextSection={this.nextSection}
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
           />
+          </div>
         </form>
       );
     } else {
       return (
         <form
           id="Contact"
-          onSubmit={(e) => this.changeForm(e, "Contact", contactButtons)}
+          onSubmit={(e) => this.changeForm(e, "Contact", contactButton)}
         >
           <FixedFields inputs={contactInputs} />
           <ButtonFields
-            buttons={contactButtons}
+            button={contactButton}
+            inputs={contactButtonInputs}
             name="Contact"
             nextSectionText="Move on to Education"
             addResponses={this.setFormState}
-            nextSection={this.nextSection}
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
           />

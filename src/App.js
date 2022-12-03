@@ -7,14 +7,30 @@ import "./App.css";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      inputsConfirmed: false, 
+      responses: []
+    }
+
+    this.updateApp = this.setState.bind(this)
   }
 
   render() {
-    return (
-      <div>
+    if (this.state.inputsConfirmed) {
+      return <div>
         <Header title="CV Builder" />
-        <Form />
+        <PDF responses={this.state.responses}
+             updateApp={this.updateApp}/> 
       </div>
-    );
+    } else {
+      return (
+        <div>
+          <Header title="CV Builder" />
+          <Form updateApp={this.updateApp}/>
+        </div>
+      );
+    }
+    
   }
 }

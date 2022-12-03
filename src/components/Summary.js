@@ -2,6 +2,7 @@ import React from "react";
 import Input from "./Input"
 import FixedFields from "./FixedFields"
 import ButtonFields from "./ButtonFields";
+import { format } from "date-fns";
 
 export default class Summary extends React.Component {
   constructor(props) {
@@ -76,10 +77,11 @@ export default class Summary extends React.Component {
           {/**Make the button below only appear for designated sections -  */}
           <button onClick={(e) => this.deleteSection()}>Delete</button>
           {this.props.responses.map((response, i) => {
+            let value = (response.type === 'month' ? format(new Date(response.value), 'LLLL y') : response.value )
             return (
               <div key={i}>
                 <h3>{response.title}</h3>
-                <p>{response.value}</p>
+                <p>{value}</p>
               </div>
             );
           })}

@@ -6,12 +6,11 @@ export default class Input extends React.Component {
     super(props);
 
     this.state = {
-      value: this.props.value
+      value: this.props.value ? this.props.value : ''
     }
   }
 
   onInput(e) {
-    console.log(e.target)
     this.setState({
       value: e.target.value
     })

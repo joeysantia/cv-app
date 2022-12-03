@@ -1,4 +1,5 @@
 import React from "react";
+import icon from './../img/resume.png'
 import "./Header.css";
 
 export default class Header extends React.Component {
@@ -14,7 +15,7 @@ export default class Header extends React.Component {
     return (
       <div id="header">
         <div id="logo-box" onClick={(e) => this.refreshPage()}>
-          <img src="#" alt="logo" id="logo"></img>
+          <img src={icon} alt="logo" id="logo"></img>
           <h1>{this.props.title}</h1>
         </div>
       </div>

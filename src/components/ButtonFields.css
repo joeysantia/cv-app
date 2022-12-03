@@ -4,10 +4,11 @@
 }
 
 .button-box button {
-    border-radius: 4px;
+    border-style: none;
+    color: lightskyblue;
+    background: white;
 }
 
 .button-box button:hover {
-    background-color: green;
-    color: white
+    color: blue;
 }

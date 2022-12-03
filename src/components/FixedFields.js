@@ -9,7 +9,7 @@ export default class FixedFields extends React.Component {
     render() {
         return (
             <div>
-                <h2>Contact</h2>
+                <h2>{this.props.title}</h2>
                 {this.props.inputs.map((input, i) => {
           return (
             <Input

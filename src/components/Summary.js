@@ -15,11 +15,11 @@ export default class Summary extends React.Component {
   }
 
   addInputs() {
+    console.log(this.props)
     //add logic to check that previous webiste fields have been filled out
     let curResponses = this.state.responses
-    console.log(this.props.addButton[0].inputs)
     this.setState({
-      responses: [...this.state.responses, ...this.props.addButton[0].inputs]
+      responses: [...this.state.responses, ...this.props.inputs]
     })
     console.log(this.state.responses)
   }
@@ -88,36 +88,13 @@ export default class Summary extends React.Component {
         </div>
       );
     } else {
-      //this should just be a Section
-      console.log(this.state.responses)
       return (
-        
-        <form id='Contact' onSubmit={(e) => this.updateInputs(e)}>
-        <FixedFields 
-          inputs={this.state.responses}/>
-        <button type='button' onClick={(e) => this.addInputs()}>Add Website</button>
-        <button type='submit'>Confirm</button>
-        </form>
-        /*
         <form id={this.props.title} onSubmit={(e) => this.updateInputs(e)}>
-          <h2>{this.props.title}</h2>
-          {Object.keys(this.state.responses).map((key) => {
-            let value = this.state.responses[key]
-            return (
-              <div>
-              <Input
-                title={key}
-                name={key}
-                placeholder={value}
-                 />
-              </div>
-              
-            )
-          })}
-        <button type='button' onClick={(e) => this.addInputs()}>Add</button>
+        <FixedFields 
+          title={this.props.title} inputs={this.state.responses}/>
+        <button type='button' onClick={(e) => this.addInputs()}>{this.props.addButton.text}</button>
         <button type='submit'>Confirm</button>
         </form>
-        */
       )
     }
   }

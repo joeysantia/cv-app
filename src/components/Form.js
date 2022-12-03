@@ -2,8 +2,6 @@ import React from "react";
 import FixedFields from "./FixedFields";
 import ButtonFields from "./ButtonFields";
 import Summary from "./Summary";
-import PDF from "./PDF";
-import { format } from 'date-fns'
 import "./Form.css";
 
 export default class Form extends React.Component {
@@ -16,7 +14,6 @@ export default class Form extends React.Component {
       educationSubmitted: false,
       experienceSubmitted: false,
       skillsSubmitted: false,
-      allConfirmed: false,
     };
     this.setFormState = this.setState.bind(this);
   }
@@ -240,6 +237,12 @@ export default class Form extends React.Component {
     //solved with a dict, but not sure how yet.
     
     if (this.state.skillsSubmitted) {
+      let buttonDict = [
+        contactButton, educationButton, experienceButton, skillsButton
+      ]
+      let inputDict = [
+        contactButtonInputs, educationInputs, experienceInputs, skillsInputs
+      ]
       return (
         <div>
           {this.state.responses.map((data, i) => {
@@ -249,9 +252,9 @@ export default class Form extends React.Component {
                 responses={data.responses}
                 index={i}
                 key={i}
-                //a ha! can I just send one response here
                 formResponses={this.state.responses}
-                addButton={data.addButton}
+                inputs={inputDict[i]}
+                addButton={buttonDict[i]}
                 updateForm={this.setFormState}
               />
             );
@@ -330,7 +333,7 @@ export default class Form extends React.Component {
           id="Contact"
           onSubmit={(e) => this.changeForm(e, "Contact", contactButton)}
         >
-          <FixedFields inputs={contactInputs} />
+          <FixedFields title='Contact' inputs={contactInputs} />
           <ButtonFields
             button={contactButton}
             inputs={contactButtonInputs}

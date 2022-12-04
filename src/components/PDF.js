@@ -27,25 +27,28 @@ export default class PDF extends React.Component {
         doc.setFontSize(14)
 
         for (let i = 2; i < 4; i++) {
-            doc.setFont('times', 'bold')
-            doc.text(`${contacts.responses[i].title}:`)
-            doc.setFont('times', 'normal')
-            doc.text(`${contacts.responses[i].value}`, x, y)
+            doc.setFont('Courier', 'bold')
+            doc.text(`${contacts.responses[i].title.slice(0, 5)}:`, x, y)
+            doc.setFont('Courier', 'normal')
+            doc.text(`${contacts.responses[i].value}`, x + 20, y)
             y += 10
         }
 
-        doc.text(`${contacts.responses[4].value}${contacts.responses[5].title === 'Address Line 2' ? ', ' + contacts.responses[5].value : ''}`, x, y)
-        y += 10
-
+        doc.text(`${contacts.responses[4].value}${contacts.responses[5].title === 'Address Line 2' ? ', ' + contacts.responses[5].value : ''}`, x + 100, y - 20)
+        doc.text(contacts.responses[6].value + ', ' + contacts.responses[7].value, x + 100, y - 10)
+/*
         for (let i = 6; i < contacts.responses.length; i++) {
-            doc.text(contacts.responses[i].value, x, y)
+            doc.text(contacts.responses[i].value, x + 100, y )
             y += 10
         }
-
+*/
+        y += 10
         doc.setFontSize(22)
+        doc.setFont('Courier', 'bold')
         doc.text(education.title, x, y)
         y += 10
         doc.setFontSize(14)
+        doc.setFont('Courier', 'normal')
 
         for (const response of education.responses) {
             let value = (response.type === 'month' ? format(new Date(response.value), 'LLLL y') : response.value) 
@@ -67,29 +70,16 @@ export default class PDF extends React.Component {
 
         for (const response of skills.responses) {
             doc.text(response.value, x, y)
-            y += 10
+            y += 11
         }
 
         //let contactResponses = this.props.responses[0].responses
-        doc.save(`${contacts.responses[0].value}${contacts.responses[1].value}Resume.pdf`)
+        //doc.save(`${contacts.responses[0].value}${contacts.responses[1].value}Resume.pdf`)
+        doc.autoPrint()
+        doc.output('dataurlnewwindow')
         return doc 
     }
 
-    generateContacts(doc, data, x, y) {
-        
-    }
-
-    generateExperience(doc, data, x, y) {
-
-    }
-
-    generateEducation(doc, data, x, y) {
-
-    }
-
-    generateSkills() {
-
-    }
 
     render() {
         console.log(this.props.responses)

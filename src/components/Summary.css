@@ -1,0 +1,24 @@
+.summary-box {
+    margin: 15px 20px
+}
+
+.top-row {
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    width: 100vw;
+}
+
+.top-row-buttons {
+    display:flex;
+    gap: 12px;
+}
+
+button {
+    height: 40px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}

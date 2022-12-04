@@ -1,5 +1,6 @@
 import React from "react";
 import Input from "./Input";
+import deleteIcon from './../img/delete.png'
 import "./ButtonFields.css";
 
 export default class ButtonFields extends React.Component {
@@ -17,13 +18,11 @@ export default class ButtonFields extends React.Component {
         {boxes.map((box, i) => {
           return (
             <div key={i} index={i} className="mini-form">
-              <button
+              <img
+                src={deleteIcon}
                 className="delete"
-                type="button"
                 onClick={(e) => this.deleteBox(i)}
-              >
-                Delete
-              </button>
+              />
               {this.generateInputs(box.inputs)}
             </div>
           );

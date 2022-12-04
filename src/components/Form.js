@@ -108,7 +108,7 @@ export default class Form extends React.Component {
     let contactButton = 
       {
         id: "website",
-        text: "Add Website",
+        text: "+ Add Website",
         inputsRendered: false,
       }
     let contactButtonInputs = [
@@ -129,7 +129,7 @@ export default class Form extends React.Component {
     let educationButton = 
       {
         id: "education",
-        text: "Add Education",
+        text: "+ Add Education",
       }
     let educationInputs = [
           {
@@ -179,7 +179,7 @@ export default class Form extends React.Component {
     let experienceButton = 
       {
         id: "experience",
-        text: "Add Experience",
+        text: "+ Add Experience",
       }
       let experienceInputs = [
           {
@@ -222,7 +222,7 @@ export default class Form extends React.Component {
     let skillsButton = 
       {
         id: "skills",
-        text: "Add Skill",
+        text: "+ Add Skill",
       }
     let skillsInputs = [
           {

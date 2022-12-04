@@ -19,12 +19,14 @@ export default class PDF extends React.Component {
 
         let doc = new jsPDF()
         doc.setFontSize(32)
+        doc.setFont('Courier', 'bold')
         doc.text(contacts.responses[0].value + ' ' + contacts.responses[1].value, 10, 10)
 
         let x = 10
         let y = 20
 
         doc.setFontSize(14)
+        doc.setFont('Courier', 'normal')
 
         for (let i = 2; i < 4; i++) {
             doc.setFont('Courier', 'bold')

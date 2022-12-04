@@ -276,7 +276,7 @@ export default class Form extends React.Component {
           id="Skills"
           onSubmit={(e) => this.changeForm(e, "Skills", skillsButton)}
         >
-          <div>
+          
           <ButtonFields
             title="Skills"
             button={skillsButton}
@@ -285,7 +285,7 @@ export default class Form extends React.Component {
             nextSectionText="Review"
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
-          /></div>
+          />
         </form>
       );
     } else if (this.state.educationSubmitted) {
@@ -296,6 +296,7 @@ export default class Form extends React.Component {
             this.changeForm(e, "Experience", experienceButton)
           }
         >
+          
           <ButtonFields
             title="Experience"
             button={experienceButton}
@@ -305,6 +306,7 @@ export default class Form extends React.Component {
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
           />
+          
         </form>
       );
     } else if (this.state.contactsSubmitted) {
@@ -313,18 +315,17 @@ export default class Form extends React.Component {
           id="Education"
           onSubmit={(e) => this.changeForm(e, "Education", educationButton)}
         >
-          <div>
+          
           <ButtonFields
             title="Education"
             button={educationButton}
             inputs={educationInputs}
             name="Education"
             nextSectionText="Move on to Experience"
-            addResponses={this.setFormState}
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
           />
-          </div>
+          
         </form>
       );
     } else {
@@ -339,7 +340,6 @@ export default class Form extends React.Component {
             inputs={contactButtonInputs}
             name="Contact"
             nextSectionText="Move on to Education"
-            addResponses={this.setFormState}
             sendResponses={this.setFormState}
             prevResponses={this.state.responses}
           />

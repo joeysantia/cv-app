@@ -55,6 +55,7 @@ export default class Summary extends React.Component {
     this.props.updateForm({
       responses: newResponses,
     });
+    console.log(this.state)
     this.setState({ isStaged: true });
   }
 
@@ -97,15 +98,34 @@ export default class Summary extends React.Component {
         </div>
       );
     } else {
-      return (
+      if (true) {
+        return (
+          <form id={this.props.title} onSubmit={(e) => this.updateInputs(e)}>
+            <FixedFields title={this.props.title} inputs={this.state.responses} />
+            <button type="button" onClick={(e) => this.addInputs()}>
+              {this.props.addButton.text}
+            </button>
+            <button type="submit">Confirm</button>
+          </form>
+        );
+      } else {
+        let indexDict = {
+          'Education': 7,
+          'Employment': 5,
+          'Skills': 1
+        }
+        let index = indexDict[this.props.title]
+        for (let i = 0; i < this.state.respnses / index; i++) {
+
+        }
+        return (
         <form id={this.props.title} onSubmit={(e) => this.updateInputs(e)}>
-          <FixedFields title={this.props.title} inputs={this.state.responses} />
-          <button type="button" onClick={(e) => this.addInputs()}>
-            {this.props.addButton.text}
-          </button>
-          <button type="submit">Confirm</button>
+          {}
         </form>
-      );
+        )
+
+      }
+     
     }
   }
 }

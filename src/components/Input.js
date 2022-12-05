@@ -111,7 +111,15 @@ export default class Input extends React.Component {
         </div>
       );
     }
-
+    let onClick = () => {}
+    
+    if (this.props.type === 'checkbox') {
+      onClick = () => {
+        let endMonth = document.querySelector('#end-month')
+        console.log(endMonth.required)
+        endMonth.required = !endMonth.required
+      }
+    }
     return (
       <div className="input">
         <label htmlFor={this.props.id}>{this.props.title}</label>
@@ -124,6 +132,7 @@ export default class Input extends React.Component {
           required={this.props.required}
           onChange={(e) => this.onInput(e)}
           value={this.state.value}
+          onClick={(e) => onClick()}
         ></input>
       </div>
     );

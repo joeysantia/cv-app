@@ -9,11 +9,66 @@ export default class Form extends React.Component {
     super(props);
 
     this.state = {
-      responses: [],
+      responses: [
+        {title: 'Contact', responses: [
+          {
+            title: "First Name",
+            id: "first-name",
+            type: "text",
+            required: true,
+          },
+          {
+            title: "Last Name",
+            id: "last-name",
+            type: "text",
+            required: true,
+          },
+          {
+            title: "Email Address",
+            id: "email",
+            type: "email",
+            required: true,
+          },
+          {
+            title: "Phone Number",
+            id: "phone",
+            type: "phone",
+            required: true,
+          },
+          {
+            title: "Address Line 1",
+            id: "address-1",
+            type: "text",
+            required: true,
+          },
+          {
+            title: "Address Line 2",
+            id: "address-2",
+            type: "text",
+            required: false,
+          },
+          {
+            title: "City",
+            id: "city",
+            type: "text",
+            required: true,
+          },
+          {
+            title: "State",
+            id: "state",
+            type: "states",
+            required: true,
+          },
+        ]},
+        {title: 'Education', responses: []},
+        {title: 'Experience', responses: []},
+        {title: 'Skills', responses: []}
+      ],
       contactsSubmitted: false,
       educationSubmitted: false,
       experienceSubmitted: false,
-      skillsSubmitted: false,
+      //experimenting
+      skillsSubmitted: true,
     };
     this.setFormState = this.setState.bind(this);
   }
@@ -238,8 +293,9 @@ export default class Form extends React.Component {
 
     //this quasi-switch statement can probably be
     //solved with a dict, but not sure how yet.
-    
+
     if (this.state.skillsSubmitted) {
+      //console.log(this.state.responses)
       let buttonDict = [
         contactButton, educationButton, experienceButton, skillsButton
       ]
@@ -249,14 +305,17 @@ export default class Form extends React.Component {
       return (
         <div>
           {this.state.responses.map((data, i) => {
+            //console.log(data.title)
+            //console.log(data.responses)
             return (
               <Summary
                 title={data.title}
-                responses={data.responses}
+                responses={/*data.title === 'Contact' ? [...contactInputs, data.responses] :*/ data.responses}
                 index={i}
                 key={i}
                 formResponses={this.state.responses}
-                inputs={inputDict[i]}
+                inputs={data.title === 'Contact' ? contactInputs : []}
+                boxInputs={inputDict[i]}
                 addButton={buttonDict[i]}
                 updateForm={this.setFormState}
               />

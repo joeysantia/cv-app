@@ -22,7 +22,7 @@ export default class Summary extends React.Component {
     //add logic to check that previous webiste fields have been filled out
     let curResponses = this.state.responses;
     this.setState({
-      responses: [...this.state.responses, ...this.props.inputs],
+      responses: [...this.state.responses, ...this.props.boxInputs],
     });
     console.log(this.state.responses);
   }
@@ -87,7 +87,7 @@ export default class Summary extends React.Component {
           </div>
           <div className='summary-grid'>
           {this.props.responses.map((response, i) => {
-            if (response.type !== 'checkbox') {
+            if (response.type !== 'checkbox' && response.value) {
             let value =
               response.type === "month"
                 ? (response.value === 'Present' ? 'Present' : format(new Date(response.value), "LLLL y"))

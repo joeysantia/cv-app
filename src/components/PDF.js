@@ -68,7 +68,7 @@ export default class PDF extends React.Component {
         doc.setFont("Courier", "bold");
         doc.text(`${responses[i++].value}:`, x, y);
         doc.setFont("Courier", "normal");
-        doc.text(`${responses[i].value}`, x + 25, y);
+        doc.text(`${responses[i++].value}`, x + 25, y);
         y += 10;
       }
     }
@@ -173,7 +173,7 @@ export default class PDF extends React.Component {
   }
 
   render() {
-    console.log(this.props.responses);
+    console.log(this.props);
     let doc = this.generatePDF();
     //console.log(this.props.firstName + this.props.lastName + 'Resume.pdf')
     return (

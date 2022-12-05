@@ -34,17 +34,17 @@ export default class ButtonFields extends React.Component {
   deleteBox(i) {
     let boxes = this.state.boxes;
     let curButtons = document.querySelectorAll(".mini-form input");
-    console.log("current values:", curButtons);
+    /*console.log("current values:", curButtons);
     console.log("state:", boxes);
     console.log("index:", i);
-    
+    */
     let curIndex = 0
 
     for (const button of boxes) {
       for (const input of button.inputs) {
-        console.log(input.value, curButtons[curIndex].value)
+        //console.log(input.value, curButtons[curIndex].value)
         input.value = curButtons[curIndex++].value
-        console.log(input.value)
+        //console.log(input.value)
       }
     }
     
@@ -60,12 +60,6 @@ export default class ButtonFields extends React.Component {
       return (
       <div>
         {inputs.map((input, i) => {
-          if (input.type === 'checkbox') {
-            onClick = () => {
-              let endMonth = document.querySelector('#end-month')
-              endMonth.required = !endMonth.required
-            }
-          }
           return (
             <Input
               key={i}
@@ -77,7 +71,7 @@ export default class ButtonFields extends React.Component {
               id={input.id}
               value={input.value}
               required={input.required}
-              onClick={(e) => onClick()}
+              onClick={(e) => onClick}
             />
           );
         })}
@@ -111,7 +105,7 @@ export default class ButtonFields extends React.Component {
     let boxes = document.querySelectorAll(".mini-form input");
 
     if (boxes.length) {
-      console.log("theres a box");
+      //console.log("theres a box");
       let lastInput = [...boxes].slice(-2);
 
       for (const input of lastInput) {
@@ -125,10 +119,6 @@ export default class ButtonFields extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log('just received some props!')
-  }
-
   render() {
     return (
       <div>
@@ -139,8 +129,6 @@ export default class ButtonFields extends React.Component {
           <button className="next-section" type="submit">
             {this.props.nextSectionText}
           </button>
-          <button type='button' onClick={(e) => console.log(this.state.boxes)}>Check Boxes</button>
-          <button type='button' onClick={(e) => console.log(this.props)}>Check props</button>
         </div>
       </div>
     );

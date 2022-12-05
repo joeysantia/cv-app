@@ -28,7 +28,7 @@ export default class Form extends React.Component {
       responses: [],
     };
     for (const element of data.elements) {
-      if (element.name !== "" && element.value !== "") {
+      if (element.name !== "" && element.value !== "" && element.type !== 'checkbox') {
         curResponses.responses.push({
           title: element.name,
           value: element.value,
@@ -37,6 +37,8 @@ export default class Form extends React.Component {
           type: element.type,
           required: element.required,
         });
+      } else if (element.type === 'checkbox' && element.checked) {
+        curResponses.responses[3].value = element.value
       }
     }
 
@@ -210,6 +212,7 @@ export default class Form extends React.Component {
             title: "I currently work here",
             id: "current",
             type: "checkbox",
+            value: 'Present',
             required: false,
           },
           {

@@ -88,7 +88,7 @@ export default class PDF extends React.Component {
     let i = 0;
     while (i < responses.length) {
       doc.setFont("Courier", "bold");
-      doc.text(format(new Date(responses[i + 2].value), "LLL y"), x, y);
+      doc.text(format( new Date(responses[i + 2].value), "LLL y"), x, y);
       doc.text(
         " - " + format(new Date(responses[i + 3].value), "LLL y"),
         x + 23,
@@ -131,9 +131,9 @@ export default class PDF extends React.Component {
     let i = 0;
     while (i < responses.length) {
       doc.setFont("Courier", "bold");
-      doc.text(format(new Date(responses[i + 2].value), "LLL y"), x, y);
+      doc.text(format( new Date(responses[i + 2].value), "LLL y"), x, y);
       doc.text(
-        " - " + format(new Date(responses[i + 3].value), "LLL y"),
+        " - " + (responses[i + 3].value === 'Present' ? 'Present' : format( new Date(responses[i + 3].value), "LLL y")),
         x + 23,
         y
       );

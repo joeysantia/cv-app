@@ -37,8 +37,12 @@ export default class Summary extends React.Component {
     let curResponses = this.state.responses;
 
     for (let i = 0; i < curResponses.length; i++) {
+      if (data.elements[i].type === 'checkbox' && data.elements[i].checked) {
+        curResponses[3].value = 'Present'
+        continue;
+      }
       curResponses[i].value = data.elements[i].value;
-      this.state.responses[i].placeholder = data.elements[i].value;
+      //this.state.responses[i].placeholder = data.elements[i].value;
     }
     console.log(curResponses);
     console.log(newResponses);
@@ -83,16 +87,17 @@ export default class Summary extends React.Component {
           </div>
           <div className='summary-grid'>
           {this.props.responses.map((response, i) => {
+            if (response.type !== 'checkbox') {
             let value =
               response.type === "month"
-                ? format(new Date(response.value), "LLLL y")
+                ? (response.value === 'Present' ? 'Present' : format(new Date(response.value), "LLLL y"))
                 : response.value;
             return (
               <div key={i}>
                 <h3>{response.title}</h3>
                 <p>{value}</p>
               </div>
-            );
+            );}
           })}
         </div>
         </div>

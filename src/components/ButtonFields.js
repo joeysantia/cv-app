@@ -56,10 +56,16 @@ export default class ButtonFields extends React.Component {
   }
 
   generateInputs(inputs) {
-    console.log(inputs)
-    return (
+    let onClick
+      return (
       <div>
         {inputs.map((input, i) => {
+          if (input.type === 'checkbox') {
+            onClick = () => {
+              let endMonth = document.querySelector('#end-month')
+              endMonth.required = !endMonth.required
+            }
+          }
           return (
             <Input
               key={i}
@@ -71,6 +77,7 @@ export default class ButtonFields extends React.Component {
               id={input.id}
               value={input.value}
               required={input.required}
+              onClick={(e) => onClick()}
             />
           );
         })}

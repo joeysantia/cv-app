@@ -82,7 +82,6 @@ export default class Summary extends React.Component {
             <h2>{this.props.title}</h2>
             <div className="top-row-buttons">
               <img src={editIcon} onClick={(e) => this.setState({ isStaged: false })}/>
-              <img src={deleteIcon} onClick={(e) => this.deleteSection()}/>
             </div>
           </div>
           <div className='summary-grid'>
@@ -107,10 +106,10 @@ export default class Summary extends React.Component {
         return (
           <form id={this.props.title} onSubmit={(e) => this.updateInputs(e)}>
             <FixedFields title={this.props.title} inputs={this.state.responses} />
-            <button type="button" onClick={(e) => this.addInputs()}>
+            <div className='button-box'><button type="button" onClick={(e) => this.addInputs()}>
               {this.props.addButton.text}
             </button>
-            <button type="submit">Confirm</button>
+            <button type="submit">Confirm</button></div>
           </form>
         );
       } else {

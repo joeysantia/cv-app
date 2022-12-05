@@ -1,4 +1,15 @@
-form {
-    margin: 2rem;
+#form {
+    width: 100vw
 }
 
+#pdf {
+    border-style: solid;
+    padding: 1rem 2rem;
+    font-size: 20px;
+    color: black; 
+    cursor: pointer;
+}
+
+#pdf:hover {
+    background-color: green;
+}

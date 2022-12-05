@@ -1,7 +1,7 @@
 import React from 'react'
 import Input from './Input'
 import deleteIcon from '../img/delete.png'
-
+import './FixedFields.css'
 export default class FixedFields extends React.Component {
     constructor(props) {
         super(props)
@@ -15,10 +15,9 @@ export default class FixedFields extends React.Component {
 
     render() {
         return (
-            <div className={this.props.class}>
+            <div>
                 <h2>{this.props.title}</h2>
-                {this.props.title === 'Contact' ? null : this.generateDeleteButton()}
-                {this.props.inputs.map((input, i) => {
+                <div className='input-box'>{this.props.inputs.map((input, i) => {
           return (
             <Input
               key={i}
@@ -32,7 +31,7 @@ export default class FixedFields extends React.Component {
               value={input.value}
             />
           );
-        })}
+        })}</div>
             </div>
         )
     

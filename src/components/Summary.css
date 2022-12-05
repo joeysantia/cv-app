@@ -1,3 +1,8 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
 .summary-box {
     margin: 15px 20px
 }
@@ -6,7 +11,6 @@
     display: flex;
     align-items: center;
     justify-content:space-between;
-    width: 100vw;
 }
 
 .top-row-buttons {
@@ -15,7 +19,9 @@
 }
 
 button {
-    height: 40px;
+    border-style: none;
+    background-color:transparent;
+    color: lightskyblue;
 }
 
 .summary-grid {

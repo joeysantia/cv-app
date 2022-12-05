@@ -303,7 +303,7 @@ export default class Form extends React.Component {
         contactButtonInputs, educationInputs, experienceInputs, skillsInputs
       ]
       return (
-        <div>
+        <div id="form">
           {this.state.responses.map((data, i) => {
             //console.log(data.title)
             //console.log(data.responses)
@@ -323,6 +323,7 @@ export default class Form extends React.Component {
           })}
           <button
             type="button"
+            id="pdf"
             onClick={(e) => this.props.updateApp({
                inputsConfirmed: true,
                responses: this.state.responses  

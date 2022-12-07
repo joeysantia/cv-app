@@ -27,7 +27,8 @@ export default class App extends React.Component {
       return (
         <div>
           <Header title="CV Builder" />
-          <Form updateApp={this.updateApp}/>
+          <Form updateApp={this.updateApp}
+                responses={this.state.responses}/>
         </div>
       );
     }

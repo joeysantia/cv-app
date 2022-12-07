@@ -18,6 +18,9 @@ export default class FixedFields extends React.Component {
             <div>
                 <h2>{this.props.title}</h2>
                 <div className='input-box'>{this.props.inputs.map((input, i) => {
+                  if (input.type === 'states') {
+                    console.log(input.value)
+                  }
           return (
             <Input
               key={i}

@@ -89,6 +89,7 @@ export default class Input extends React.Component {
             id={this.props.id}
             name={this.props.title}
             required={this.props.required}
+            value={this.props.value}
             onChange={(e) => this.onInput(e)}
           >
             {states.map((state, i) => {

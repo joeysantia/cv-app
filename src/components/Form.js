@@ -79,13 +79,13 @@ export default class Form extends React.Component {
     let contactButtonInputs = [
           {
             title: "Website Label",
-            id: "website-label",
+            class: "website-label",
             type: "text",
             required: false,
           },
           {
             title: "Website URL",
-            id: "website-url",
+            class: "website-url",
             type: "text",
             required: false,
           },

@@ -121,6 +121,7 @@ export default class Input extends React.Component {
         endMonth.required = !endMonth.required
       }
     }
+
     return (
       <div className="input">
         <label htmlFor={this.props.id}>{this.props.title}</label>
@@ -128,7 +129,7 @@ export default class Input extends React.Component {
           className={this.props.class}
           contentEditable={true}
           id={this.props.id}
-          name={this.props.title}
+          name={this.props.id}
           type={this.props.type}
           required={this.props.required}
           onChange={(e) => this.onInput(e)}

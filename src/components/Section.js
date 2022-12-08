@@ -33,6 +33,15 @@ export default class Section extends React.Component {
         }
       }
     }
+    let index = boxes.length
+
+    let boxInputs = this.props.boxInputs
+
+    for (const input of boxInputs) {
+      input.title = input.title + ' ' + (index + 1)
+      //input.name = input.name + ' ' + (index + 1)
+    }
+
     this.setState({
       /**
        * differentiation may be necessary here.
@@ -57,7 +66,7 @@ export default class Section extends React.Component {
                 alt="delete"
                 onClick={(e) => this.deleteBox(i)}
               />
-              {this.generateInputs(box.inputs)}
+              {this.generateInputs(box.inputs, i + 1)}
             </div>
           );
         })}
@@ -88,7 +97,7 @@ export default class Section extends React.Component {
     });
   }
 
-  generateInputs(inputs) {
+  generateInputs(inputs, index) {
     console.log(inputs);
     let onClick;
     return (
@@ -103,6 +112,7 @@ export default class Section extends React.Component {
               name={input.id}
               htmlFor={input.id}
               id={input.id}
+              index={index}
               value={input.value}
               required={input.required}
               onClick={(e) => onClick}

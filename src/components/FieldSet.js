@@ -1,8 +1,8 @@
 import React from 'react'
 import Input from './Input'
 import deleteIcon from '../img/delete.png'
-import './FixedFields.css'
-export default class FixedFields extends React.Component {
+import './FieldSet.css'
+export default class FieldSet extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -15,7 +15,7 @@ export default class FixedFields extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='fixed-fields'>
                 <h2>{this.props.title}</h2>
                 <div className='input-box'>{this.props.inputs.map((input, i) => {
                   if (input.type === 'states') {

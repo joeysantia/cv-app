@@ -1,9 +1,12 @@
 form {
     display: flex;
     flex-direction: column;
+    align-items: center; 
+    gap: 12px;
+    
 }
 
-.summary-box {
+.section-box {
     margin: 15px 20px
 }
 
@@ -27,6 +30,12 @@ button {
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.box-box {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .button-box {

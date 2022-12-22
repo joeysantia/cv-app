@@ -57,13 +57,13 @@ img {
     height: 20px;
     cursor: pointer;
 }
-
+/*
 .mini-form {
-    background: grey;
+    background: #c8a9e3;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     width: min-content;
     padding: 10px 5px;
     border-radius: 4px;
-}
+}*/

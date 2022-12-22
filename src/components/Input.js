@@ -2,6 +2,25 @@ import React from "react";
 import "./Input.css"
 
 export default class Input extends React.Component {
+  /**
+   * 
+   * OUTLINE FOR THIS COMPONENT:
+   * 
+   * Props:
+   * 1. Title: label for the input
+   * 2. id: id, name, and htmlFor attributes
+   * 3. className: className required attribute
+   * 4. required: required attribute
+   * 5. type: determines which input type (including textarea and select)
+   * 6. value: predetermined value, if defined
+   * 
+   * State:
+   * 1. value: current value of the input
+   * 
+   * Main functions
+   * 1. onInput: updates the state's value 
+   */
+  
   constructor(props) {
     super(props);
 
@@ -107,21 +126,24 @@ export default class Input extends React.Component {
             name={this.props.title}
             required={this.props.required}
             onChange={(e) => this.onInput(e)}
+            value={this.props.value}
           >
           </textarea>
         </div>
       );
     }
+
     let onClick = () => {}
     
     if (this.props.type === 'checkbox') {
       onClick = () => {
         let endMonth = document.querySelector('#end-month')
-        console.log(endMonth.required)
         endMonth.required = !endMonth.required
       }
     }
 
+    let title = this.props.title + (this.props.id ? '' : ' ' + (this.props.index))
+    let className = this.props.class + (this.props.id ? '' : '-' + (this.props.index))
     return (
       <div className="input">
         <label htmlFor={this.props.id}>{this.props.title}</label>

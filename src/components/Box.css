@@ -1,0 +1,25 @@
+.mini-form {
+    background: #c8a9e3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min-content;
+    padding: 10px 5px;
+    gap: 6px;
+    border-radius: 4px;
+}
+
+.delete-box {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.mini-form button {
+    color: black;
+}
+
+.mini-form button:hover {
+    opacity: 0.5;
+}

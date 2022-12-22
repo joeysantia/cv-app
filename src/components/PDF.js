@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import jsPDF from "jspdf";
 import React from "react";
+import './PDF.css'
 
 export default class PDF extends React.Component {
   constructor(props) {
@@ -177,9 +178,9 @@ export default class PDF extends React.Component {
     let doc = this.generatePDF();
     //console.log(this.props.firstName + this.props.lastName + 'Resume.pdf')
     return (
-      <div>
-        <h1>Your resume is complete</h1>
-        <p>Check your Downloads folder for a copy. You may also print it by clicking this <button onClick={(e) => this.printPDF(doc)}>button.</button></p>
+      <div id='pdf-page'>
+        <h1>Your resume is complete.</h1>
+        <p>Check your Downloads folder for a copy. You may also print it by clicking<button onClick={(e) => this.printPDF(doc)}>here.</button></p>
         <button
           onClick={(e) => this.props.updateApp({ inputsConfirmed: false })}
         >

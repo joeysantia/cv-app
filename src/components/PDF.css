@@ -1,0 +1,25 @@
+p > button {
+    font-size: 16px;
+}
+
+
+
+#pdf-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#pdf-page > button {
+    border-style: solid;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+}
+
+#pdf-page > button:hover {
+    background-color: #a78ac1;
+}

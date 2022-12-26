@@ -3,88 +3,55 @@ import Section from "./Section";
 import "./Form.css";
 
 export default class Form extends React.Component {
-
   /**
-   * 
+   *
    * Props:
    * 1. updateForm: function that allows responses to be sent to App
-   * (currently I have responses inherited as props from the App - but I think these can be removed!)
-   * 
+   * 2. responses: previously sent data from the form
+   *
    * State:
    * 1. responses: array with responses passed up from each section
-   * 
+   *
    * Functions
    * 1. updateForm - allows the sections to send responses to the form
    * 2. render - creates one Section for each section in the sectionDict.
-   * 
+   *
    */
   constructor(props) {
     super(props);
 
     this.state = {
       responses: [
-        {
-          title: "Contact",
-          responses: [/*
-            {
-              title: "First Name",
-              id: "first-name",
-              type: "text",
-              required: true,
-            },
-            {
-              title: "Last Name",
-              id: "last-name",
-              type: "text",
-              required: true,
-            },
-            {
-              title: "Email Address",
-              id: "email",
-              type: "email",
-              required: true,
-            },
-            {
-              title: "Phone Number",
-              id: "phone",
-              type: "phone",
-              required: true,
-            },
-            {
-              title: "Address Line 1",
-              id: "address-1",
-              type: "text",
-              required: true,
-            },
-            {
-              title: "Address Line 2",
-              id: "address-2",
-              type: "text",
-              required: false,
-            },
-            {
-              title: "City",
-              id: "city",
-              type: "text",
-              required: true,
-            },
-            {
-              title: "State",
-              id: "state",
-              type: "states",
-              required: true,
-            },*/
-          ],
-        },
-        { title: "Education", responses: [] },
-        { title: "Experience", responses: [] },
-        { title: "Skills", responses: [] },
+        { title: "Contact", boxes: [] },
+        { title: "Education", boxes: [] },
+        { title: "Experience", boxes: [] },
+        { title: "Skills", boxes: [] },
       ],
     };
     this.updateForm = this.setState.bind(this);
   }
 
+  submitForm(e) {
+        e.preventDefault()
+        let inputs = document.querySelectorAll('input')
+
+        if (!inputs.length) {
+          this.props.updateApp({
+            inputsConfirmed: true,
+            responses: this.state.responses,
+          })
+        } else {
+          alert('Please confirm all information before generating a PDF.')
+        }
+        
+  }
+
   render() {
+    let contactButton = {
+      id: "website",
+      text: "+ Add Website",
+      inputsRendered: false,
+    };
     let contactInputs = [
       {
         title: "First Name",
@@ -134,27 +101,21 @@ export default class Form extends React.Component {
         type: "states",
         required: true,
       },
-    ]
-    let contactButton = {
-      id: "website",
-      text: "+ Add Website",
-      inputsRendered: false,
-    };
+    ];
     let websiteInputs = [
       {
         title: "Website Label",
         class: "website-label",
         type: "text",
-        required: false,
+        required: true,
       },
       {
         title: "Website URL",
         class: "website-url",
         type: "text",
-        required: false,
+        required: true,
       },
     ];
-
     let educationButton = {
       id: "education",
       text: "+ Add Education",
@@ -273,7 +234,7 @@ export default class Form extends React.Component {
       skillsInputs,
     ];
     return (
-      <div id="form">
+      <div id="form" /*onSubmit={(e) => this.submitForm(e)}*/>
         {this.state.responses.map((data, i) => {
           return (
             <Section
@@ -282,9 +243,8 @@ export default class Form extends React.Component {
               index={i}
               key={i}
               formResponses={this.state.responses}
-              //inputs={data.title === "Contact" ? contactInputs : []}
+              //why do I separate fixedInputs?
               fixedInputs={data.title === "Contact" ? contactInputs : []}
-              //fixedBoxInputs={data.title === "Contact" ? contactInputs : []}
               boxInputs={inputDict[i]}
               addButton={buttonDict[i]}
               updateForm={this.updateForm}
@@ -294,11 +254,7 @@ export default class Form extends React.Component {
         <button
           type="button"
           id="pdf"
-          onClick={(e) =>
-            this.props.updateApp({
-              inputsConfirmed: true,
-              responses: this.state.responses,
-            })
+          onClick={(e) => this.submitForm(e)
           }
         >
           Generate PDF

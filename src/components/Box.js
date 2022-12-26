@@ -1,7 +1,7 @@
 import React from "react";
 import "./Box.css";
 import deleteIcon from "../img/delete.png";
-import editIcon from '../img/edit.png'
+import editIcon from "../img/edit.png";
 import { format } from "date-fns";
 import Input from "./Input";
 
@@ -42,63 +42,77 @@ export default class Box extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    if (
+      JSON.stringify(this.props.responses) !==
+      JSON.stringify(this.state.responses)
+    ) {
+      this.setState({
+        responses: this.props.responses,
+      });
+    }
+  }
+
   deleteBox(i) {
-      
     let boxes = JSON.parse(JSON.stringify(this.props.sectionBoxes));
-    
-    
+
     this.props.updateSection({
       boxes: [...boxes.slice(0, i), ...boxes.slice(i + 1)],
     });
-    
-    
   }
 
   confirmResponses() {
-    let curInputs = document.querySelectorAll(`.mini-form[index="${this.props.index}"] input`)
+    let curInputs = document.querySelectorAll(
+      `#${this.props.id} input, #${this.props.id} select, #${this.props.id} textarea`
+    );
 
-    let sectionBoxes = JSON.parse(JSON.stringify(this.props.sectionBoxes))
-    let curResponses = JSON.parse(JSON.stringify(this.state.responses))
-    
+    let sectionBoxes = JSON.parse(JSON.stringify(this.props.sectionBoxes));
+    let curResponses = JSON.parse(JSON.stringify(this.state.responses));
+   
     for (let i = 0; i < curInputs.length; i++) {
-      sectionBoxes[this.props.index].inputs[i].value = curInputs[i].value
-      curResponses[i].value = curInputs[i].value
-    }
+      if (curInputs[i].type === "checkbox" && curInputs[i].checked) {
+        curResponses[3].value = "Present";
+        continue;
+      }
 
-    console.log(sectionBoxes)
-    
+      sectionBoxes[this.props.index].inputs[i].value = curInputs[i].value;
+      curResponses[i].value = curInputs[i].value;
+    }
 
     this.setState({
       isStaged: true,
-      responses: curResponses
-    })
-    
+      responses: curResponses,
+    });
 
-    
+    //do I really need to do this? Is there a simpler way?
     this.props.updateSection({
-      boxes: sectionBoxes
-    })
-    
-    
-    
+      boxes: sectionBoxes,
+    });
 
+    let formResponses = JSON.parse(JSON.stringify(this.props.formResponses));
+    formResponses[this.props.sectionIndex].boxes = sectionBoxes;
+    this.props.updateForm({
+      responses: formResponses,
+    });
   }
 
   render() {
     if (this.state.isStaged) {
       return (
-        <div index={this.props.index} className="mini-form">
-          {!this.props.isFixed ? <img
-            src={deleteIcon}
-            className="delete"
-            alt="delete"
-            onClick={(e) => this.deleteBox(this.props.index)}
-          /> : null}
-          <img 
+        <div id={this.props.id} index={this.props.index} className="mini-form">
+          {!this.props.isFixed ? (
+            <img
+              src={deleteIcon}
+              className="delete"
+              alt="delete"
+              onClick={(e) => this.deleteBox(this.props.index)}
+            />
+          ) : null}
+          <img
             src={editIcon}
-            className='edit'
-            alt='edit'
-            onClick={(e) => this.setState({isStaged: false})}
+            className="edit"
+            alt="edit"
+            onClick={(e) => this.setState({ isStaged: false })}
           />
           {this.state.responses.map((response, i) => {
             if (response.type !== "checkbox" && response.value) {
@@ -114,21 +128,29 @@ export default class Box extends React.Component {
                   <p>{value}</p>
                 </div>
               );
+            } else {
+              return null;
             }
           })}
         </div>
       );
     } else {
-      console.log(this.state.responses)
       return (
-        <div index={this.props.index} className="mini-form">
-          <div className='delete-box'>
-          {!this.props.isFixed ? <img
-            src={deleteIcon}
-            className="delete"
-            alt="delete"
-            onClick={(e) => this.deleteBox(this.props.index)}
-          /> : null}
+        <form
+          id={this.props.id}
+          index={this.props.index}
+          className="mini-form"
+          onSubmit={(e) => this.confirmResponses()}
+        >
+          <div className="delete-box">
+            {!this.props.isFixed ? (
+              <img
+                src={deleteIcon}
+                className="delete"
+                alt="delete"
+                onClick={(e) => this.deleteBox(this.props.index)}
+              />
+            ) : null}
           </div>
           {this.state.responses.map((response, i) => {
             return (
@@ -147,8 +169,8 @@ export default class Box extends React.Component {
             );
           })}
 
-                  <button type='button' onClick={(e) => this.confirmResponses()}>Confirm</button>
-        </div>
+          <button type="submit">Confirm</button>
+        </form>
       );
     }
   }

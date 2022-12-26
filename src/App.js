@@ -11,10 +11,11 @@ import "./App.css";
  * 
  * State: 
  * 1. inputsConfirmed: when "false", displays the Form component. When "true", displays the PDF component
- * 2. inputs: contains all of the inputs sent by the Form.
+ * 2. responses: contains all of the data sent by the Form.
  * 
  * MAIN FUNCTIONS:
  * 1. Displays the header.
+ * 2. updateApp: allows child components to update the app
  * 
  * inputsConfirmed = true
  * 1. Generates the PDF component

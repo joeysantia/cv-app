@@ -11,8 +11,6 @@ export default class PDF extends React.Component {
   generatePDF() {
     let [contacts, education, experience, skills] = this.props.responses;
 
-    console.log(contacts);
-
     let doc = new jsPDF();
     let x = 10;
     let y = 20;
@@ -27,7 +25,7 @@ export default class PDF extends React.Component {
     
     let [newestX, newestY] = this.generateExperience(experience.boxes, doc, newerX, newerY)
     this.generateSkills(skills.boxes, doc, newestX, newestY)
-    //doc.save(`${contacts.responses[0].value}${contacts.responses[1].value}Resume.pdf`)
+    doc.save(`${contacts.boxes[0].inputs[0].value}${contacts.boxes[0].inputs[1].value}Resume.pdf`)
     doc.autoPrint();
     doc.output('dataurlnewwindow')
     return doc;
@@ -73,7 +71,7 @@ export default class PDF extends React.Component {
       doc.setFont("Courier", "bold");
         doc.text(`${website[0].value}:`, x, y);
         doc.setFont("Courier", "normal");
-        doc.text(`${website[1].value}`, x + 25, y);
+        doc.text(`${website[1].value}`, x + 35, y);
         y += 10;
     }
 
@@ -116,12 +114,6 @@ export default class PDF extends React.Component {
       doc.text(entry[1].value, x + 70, y + 10);
       doc.text(entry[6].value, x + 70, y + 20);
       
-
-      /**
-       * this is fixed for now, but the y value should 
-       * increase depending on how long the Description 
-       * response is. Flagging for later
-       */
       y += 30
     }
 
@@ -158,24 +150,7 @@ export default class PDF extends React.Component {
       y += 30
 
     }
-    /*
-    while (i < responses.length) {
-      doc.setFont("Courier", "bold");
-      doc.text(format( new Date(responses[i + 2].value), "LLL y"), x, y);
-      doc.text(
-        " - " + (responses[i + 3].value === 'Present' ? 'Present' : format( new Date(responses[i + 3].value), "LLL y")),
-        x + 23,
-        y
-      );
-      doc.text(responses[i].value, x + 70, y)
-      doc.setFont('Courier', 'normal')
-      doc.text(responses[i + 1].value, x + 70, y + 10)
-      doc.text(responses[i + 5].value, x + 70, y + 20)
-
-      i += 6;
-      y += 30
-    }
-    */
+  
     return [x, y]
   }
   
@@ -209,7 +184,6 @@ export default class PDF extends React.Component {
   render() {
     console.log(this.props);
     let doc = this.generatePDF();
-    //console.log(this.props.firstName + this.props.lastName + 'Resume.pdf')
     return (
       <div id='pdf-page'>
         <h1>Your resume is complete.</h1>

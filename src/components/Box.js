@@ -72,6 +72,7 @@ export default class Box extends React.Component {
     for (let i = 0; i < curInputs.length; i++) {
       if (curInputs[i].type === "checkbox" && curInputs[i].checked) {
         curResponses[3].value = "Present";
+        sectionBoxes[this.props.index].inputs[3].value = 'Present'
         continue;
       }
 
@@ -116,6 +117,9 @@ export default class Box extends React.Component {
           />
           {this.state.responses.map((response, i) => {
             if (response.type !== "checkbox" && response.value) {
+              if (i === 3) {
+                console.log(response.value)
+              }
               let value = response.value;
 
               if (response.type === "month" && value !== "Present") {
@@ -169,7 +173,7 @@ export default class Box extends React.Component {
             );
           })}
 
-          <button type="submit">Confirm</button>
+          <button type="submit" onClick={(e) => this.confirmResponses()}>Confirm</button>
         </form>
       );
     }

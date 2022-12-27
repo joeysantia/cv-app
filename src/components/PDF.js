@@ -16,68 +16,74 @@ export default class PDF extends React.Component {
     let doc = new jsPDF();
     let x = 10;
     let y = 20;
-    let [newX, newY] = this.generateContacts(contacts.responses, doc, x, y);
+    let [newX, newY] = this.generateContacts(contacts.boxes, doc, x, y);
+   
     let [newerX, newerY] = this.generateEducation(
-      education.responses,
+      education.boxes,
       doc,
       newX,
       newY
     );
-    let [newestX, newestY] = this.generateExperience(experience.responses, doc, newerX, newerY)
-    this.generateSkills(skills.responses, doc, newestX, newestY)
-    doc.save(`${contacts.responses[0].value}${contacts.responses[1].value}Resume.pdf`)
-    //doc.autoPrint();
-    //doc.output('dataurlnewwindow')
+    
+    let [newestX, newestY] = this.generateExperience(experience.boxes, doc, newerX, newerY)
+    this.generateSkills(skills.boxes, doc, newestX, newestY)
+    //doc.save(`${contacts.responses[0].value}${contacts.responses[1].value}Resume.pdf`)
+    doc.autoPrint();
+    doc.output('dataurlnewwindow')
     return doc;
   }
 
-  generateContacts(responses, doc, x, y) {
+  generateContacts(boxes, doc, x, y) {
+    
+    let contactInfo = boxes[0].inputs
     let i = 0;
     doc.setFontSize(32);
     doc.setFont("Courier", "bold");
-    doc.text(responses[i++].value + " " + responses[i++].value, 10, 10);
+    doc.text(contactInfo[i++].value + " " + contactInfo[i++].value, 10, 10);
 
     doc.setFontSize(14);
     doc.setFont("Courier", "normal");
 
     while (i < 4) {
       doc.setFont("Courier", "bold");
-      doc.text(`${responses[i].title.slice(0, 5)}:`, x, y);
+      doc.text(`${contactInfo[i].title.slice(0, 5)}:`, x, y);
       doc.setFont("Courier", "normal");
-      doc.text(`${responses[i++].value}`, x + 20, y);
+      doc.text(`${contactInfo[i++].value}`, x + 20, y);
       y += 10;
     }
 
-    console.log(responses[i].value);
     doc.text(
-      `${responses[i++].value}${
-        responses[i].title === "Address Line 2"
-          ? ", " + responses[i++].value
+      `${contactInfo[i++].value}${
+        contactInfo[i].title === "Address Line 2"
+          ? ", " + contactInfo[i++].value
           : ""
       }`,
       x + 100,
       y - 20
     );
     doc.text(
-      responses[i++].value + ", " + responses[i++].value,
+      contactInfo[i++].value + ", " + contactInfo[i++].value,
       x + 100,
       y - 10
     );
 
-    if (i < responses.length) {
-      while (i < responses.length) {
-        doc.setFont("Courier", "bold");
-        doc.text(`${responses[i++].value}:`, x, y);
+    for (let i = 1; i < boxes.length; i++) {
+      let website = boxes[i].inputs
+      console.log('website:', website)
+      doc.setFont("Courier", "bold");
+        doc.text(`${website[0].value}:`, x, y);
         doc.setFont("Courier", "normal");
-        doc.text(`${responses[i++].value}`, x + 25, y);
+        doc.text(`${website[1].value}`, x + 25, y);
         y += 10;
-      }
     }
 
     return [x, y];
   }
 
-  generateEducation(responses, doc, x, y) {
+  generateEducation(boxes, doc, x, y) {
+   if (boxes.length === 0) {
+    return [x, y]
+   } 
     doc.setFont("Courier", "bold");
     doc.setFontSize(24);
     y += 10;
@@ -86,28 +92,30 @@ export default class PDF extends React.Component {
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
 
-    let i = 0;
-    while (i < responses.length) {
+    for (let i = 0; i < boxes.length; i++) {
+      let entry = boxes[i].inputs
+
       doc.setFont("Courier", "bold");
-      doc.text(format( new Date(responses[i + 2].value), "LLL y"), x, y);
+      doc.text(format( new Date(entry[2].value), "LLL y"), x, y);
       doc.text(
-        " - " + format(new Date(responses[i + 3].value), "LLL y"),
+        " - " + format(new Date(entry[3].value), "LLL y"),
         x + 23,
         y
       );
       doc.text(
-        responses[i + 4].value +
+        entry[4].value +
           " " +
-          responses[i + 5].value +
+          entry[5].value +
           ", " +
-          responses[i].value,
+          entry[0].value,
         x + 70,
         y
       );
       doc.setFont("Courier", "normal");
 
-      doc.text(responses[i + 1].value, x + 70, y + 10);
-      doc.text(responses[i + 6].value, x + 70, y + 20);
+      doc.text(entry[1].value, x + 70, y + 10);
+      doc.text(entry[6].value, x + 70, y + 20);
+      
 
       /**
        * this is fixed for now, but the y value should 
@@ -115,13 +123,15 @@ export default class PDF extends React.Component {
        * response is. Flagging for later
        */
       y += 30
-      i += 8;
     }
 
     return [x, y];
   }
 
-  generateExperience(responses, doc, x, y) {
+  generateExperience(boxes, doc, x, y) {
+    if (boxes.length === 0) {
+      return [x, y]
+    }
     doc.setFont("Courier", "bold");
     doc.setFontSize(24);
     y += 10;
@@ -129,7 +139,26 @@ export default class PDF extends React.Component {
     y += 10;
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
-    let i = 0;
+
+    for (let i = 0; i < boxes.length; i++) {
+      let job = boxes[i].inputs
+
+      doc.setFont("Courier", "bold");
+      doc.text(format( new Date(job[2].value), "LLL y"), x, y);
+      doc.text(
+        " - " + (job[3].value === 'Present' ? 'Present' : format( new Date(job[3].value), "LLL y")),
+        x + 23,
+        y
+      );
+      doc.text(job[0].value, x + 70, y)
+      doc.setFont('Courier', 'normal')
+      doc.text(job[1].value, x + 70, y + 10)
+      doc.text(job[5].value, x + 70, y + 20)
+
+      y += 30
+
+    }
+    /*
     while (i < responses.length) {
       doc.setFont("Courier", "bold");
       doc.text(format( new Date(responses[i + 2].value), "LLL y"), x, y);
@@ -146,11 +175,15 @@ export default class PDF extends React.Component {
       i += 6;
       y += 30
     }
-
+    */
     return [x, y]
   }
+  
 
-  generateSkills(responses, doc, x, y) {
+  generateSkills(boxes, doc, x, y) {
+    if (boxes.length === 0) {
+      return [x, y]
+    }
     doc.setFont("Courier", "bold");
     doc.setFontSize(24);
     y += 10;
@@ -158,11 +191,11 @@ export default class PDF extends React.Component {
     y += 10;
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
-    for (let i = 0; i < responses.length; i++) {
+    for (let i = 0; i < boxes.length; i++) {
         if (i % 2 === 0) {
-            doc.text(responses[i].value, x, y)
+            doc.text(boxes[i].inputs[0].value, x, y)
         } else {
-            doc.text(responses[i].value, x + 70, y)
+            doc.text(boxes[i].inputs[0].value, x + 70, y)
             y += 10
         }
     }

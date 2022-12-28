@@ -3,35 +3,33 @@ import jsPDF from "jspdf";
 import React from "react";
 import './PDF.css'
 
-export default class PDF extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default function PDF(props){
+  
 
-  generatePDF() {
-    let [contacts, education, experience, skills] = this.props.responses;
+  function generatePDF() {
+    let [contacts, education, experience, skills] = props.responses;
 
     let doc = new jsPDF();
     let x = 10;
     let y = 20;
-    let [newX, newY] = this.generateContacts(contacts.boxes, doc, x, y);
+    let [newX, newY] = generateContacts(contacts.boxes, doc, x, y);
    
-    let [newerX, newerY] = this.generateEducation(
+    let [newerX, newerY] = generateEducation(
       education.boxes,
       doc,
       newX,
       newY
     );
     
-    let [newestX, newestY] = this.generateExperience(experience.boxes, doc, newerX, newerY)
-    this.generateSkills(skills.boxes, doc, newestX, newestY)
+    let [newestX, newestY] = generateExperience(experience.boxes, doc, newerX, newerY)
+    generateSkills(skills.boxes, doc, newestX, newestY)
     doc.save(`${contacts.boxes[0].inputs[0].value}${contacts.boxes[0].inputs[1].value}Resume.pdf`)
     doc.autoPrint();
     doc.output('dataurlnewwindow')
     return doc;
   }
 
-  generateContacts(boxes, doc, x, y) {
+  function generateContacts(boxes, doc, x, y) {
     
     let contactInfo = boxes[0].inputs
     let i = 0;
@@ -78,7 +76,7 @@ export default class PDF extends React.Component {
     return [x, y];
   }
 
-  generateEducation(boxes, doc, x, y) {
+  function generateEducation(boxes, doc, x, y) {
    if (boxes.length === 0) {
     return [x, y]
    } 
@@ -120,7 +118,7 @@ export default class PDF extends React.Component {
     return [x, y];
   }
 
-  generateExperience(boxes, doc, x, y) {
+  function generateExperience(boxes, doc, x, y) {
     if (boxes.length === 0) {
       return [x, y]
     }
@@ -155,7 +153,7 @@ export default class PDF extends React.Component {
   }
   
 
-  generateSkills(boxes, doc, x, y) {
+  function generateSkills(boxes, doc, x, y) {
     if (boxes.length === 0) {
       return [x, y]
     }
@@ -176,24 +174,24 @@ export default class PDF extends React.Component {
     }
   }
 
-  printPDF(doc) {
+  function printPDF(doc) {
     doc.autoPrint();
     doc.output('dataurlnewwindow')
   }
+  
 
-  render() {
-    console.log(this.props);
-    let doc = this.generatePDF();
+  let doc = generatePDF();
     return (
       <div id='pdf-page'>
         <h1>Your resume is complete.</h1>
-        <p>Check your Downloads folder for a copy. You may also print it by clicking<button onClick={(e) => this.printPDF(doc)}>here.</button></p>
+        <p>Check your Downloads folder for a copy. You may also print it by clicking<button onClick={(e) => printPDF(doc)}>here.</button></p>
         <button
-          onClick={(e) => this.props.updateApp({ inputsConfirmed: false })}
+          onClick={(e) => props.setInputsConfirmed(false)}
         >
           Edit Information
         </button>
       </div>
     );
-  }
+  
 }
+ 

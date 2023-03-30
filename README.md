@@ -1,6 +1,14 @@
-# Getting Started with Create React App
+# CV Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a resume-builder that generates a PDF file based on form inputs from the user. This is an early React project of mine and uses the jsPDF library for PDF creation.
+
+## Further Improvements
+1. Make the PDF formatting more dynamic
+2. Allow the user to see a preview before the PDF is generated
+3. Fix formatting issues in the Contact/Add Website section.
+4. Customize form validation to indicate more clearly which sections must be fixed before a PDF can be created
+5. Add the option to create and store multiple resumes
+
 
 ## Available Scripts
 
@@ -68,3 +76,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+##Image Credits
+- Resume icon: spaceman.design https://www.flaticon.com/authors/spacemandesign
+- Trash icon: Freepik https://www.flaticon.com/authors/freepik
